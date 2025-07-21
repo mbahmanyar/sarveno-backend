@@ -1,0 +1,14 @@
+{
+    "$schema": "https://json.schemastore.org/composer",
+    "name": "mbahmanyar/sarvcrm",
+    "description": "A Mini MVC project for a shopping list application.",
+    "authors": [
+        {
+            "name": "Mohammad Bahmanyar",
+            "email": "mbahmnayar72@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.4"
+    }
+}
