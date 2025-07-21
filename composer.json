@@ -9,6 +9,13 @@
         }
     ],
     "require": {
-        "php": "^8.4"
+        "php": "^8.4",
+      "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4" : {
+            "Core\\": "core/"
+        }
     }
+
 }
