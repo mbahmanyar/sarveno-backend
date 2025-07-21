@@ -38,7 +38,6 @@ class Router
     {
 
         foreach ($this->routes as $route) {
-            echo $route['pattern'];
             if (preg_match($route['pattern'], $this->requestUri, $params) && $route['method'] === $this->requestMethod) {
                 array_shift($params);
                 return [...$route, "params" => $params];

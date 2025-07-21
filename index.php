@@ -16,13 +16,10 @@ $router->get('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsControl
 
 $router->get('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'show']);
 
-$check = $router->handle();
+$response = $router->handle();
 
 
-$items = new App\Repositories\ShoppingItemRepository()->get();
-
-
-echo response($items);
+echo response($response);
 
 
 

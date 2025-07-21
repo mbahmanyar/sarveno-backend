@@ -2,13 +2,14 @@
 
 namespace App\Controllers;
 
+use App\Repositories\ShoppingItemRepository;
+
 class ShoppingItemsController
 {
 
     public function index()
     {
-        var_dump("index");
-        die();
+        return new ShoppingItemRepository()->get();
     }
 
     public function show()
