@@ -15,7 +15,10 @@ $container = new \Core\Container();
 
 \Core\Application::bindToContainer(\Core\Database::class, new \Core\Database());
 \Core\Application::bindToContainer(\Core\Router::class, new \Core\Router($uri, $method));
-
+\Core\Application::bindToContainer(
+    \App\Repositories\ShoppingItemRepository::class,
+    new \App\Repositories\ShoppingItemRepository(\Core\Application::container()->resolve(\Core\Database::class))
+);
 
 try {
     $router = \Core\Application::container()->resolve(Router::class);

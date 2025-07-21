@@ -3,13 +3,14 @@
 namespace App\Controllers;
 
 use App\Repositories\ShoppingItemRepository;
+use Core\Application;
 
 class ShoppingItemsController
 {
 
     public function index()
     {
-        return new ShoppingItemRepository()->get();
+        return Application::$container->resolve(ShoppingItemRepository::class)->get();
     }
 
     public function show()

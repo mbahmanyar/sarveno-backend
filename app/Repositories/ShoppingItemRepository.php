@@ -5,11 +5,10 @@ namespace App\Repositories;
 class ShoppingItemRepository
 {
 
-    private \Core\Database $db;
-
-    public function __construct()
+    public function __construct(
+        private \Core\Database $db
+    )
     {
-        $this->db = new \Core\Database();
     }
 
 
