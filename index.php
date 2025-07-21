@@ -9,9 +9,16 @@ require 'vendor/autoload.php';
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
+$container = new \Core\Container();
+
+\Core\Application::setContainer($container);
+
+\Core\Application::bindToContainer(\Core\Database::class, new \Core\Database());
+\Core\Application::bindToContainer(\Core\Router::class, new \Core\Router($uri, $method));
+
 
 try {
-    $router = new Router($uri, $method);
+    $router = \Core\Application::container()->resolve(Router::class);
     $router->get('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'index']);
     $router->get('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'show']);
     $response = $router->handle();
