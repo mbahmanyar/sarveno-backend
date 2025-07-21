@@ -15,11 +15,19 @@
     "autoload": {
         "psr-4" : {
             "Core\\": "core/",
-            "App\\": "app/"
+            "App\\": "app/",
+            "Tests\\": "tests/"
         },
         "files": [
             "core/helper.php"
         ]
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.8"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": false
+        }
     }
-
 }
