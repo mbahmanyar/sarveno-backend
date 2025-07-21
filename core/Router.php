@@ -2,6 +2,7 @@
 
 namespace Core;
 
+use App\Exception\NotFoundException;
 use Closure;
 use Exception;
 
@@ -45,13 +46,15 @@ class Router
         }
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function handle()
     {
         $foundRoute = $this->findRoute();
 
         if (!$foundRoute) {
-            // todo handle exception
-            throw new Exception("Route not found", 404);
+            throw new NotFoundException("Route not found", 404);
         }
 
         return call_user_func_array([new $foundRoute['controller'][0], $foundRoute['controller'][1]], $foundRoute['params']);

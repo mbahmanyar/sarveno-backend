@@ -10,16 +10,23 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
 
-$router = new Router($uri, $method);
+try {
+    $router = new Router($uri, $method);
+    $router->get('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'index']);
+    $router->get('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'show']);
+    $response = $router->handle();
+    echo response($response);
 
-$router->get('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'index']);
+} catch (Exception $e) {
 
-$router->get('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'show']);
+    if ($e instanceof \App\Exception\NotFoundException) {
+        echo abort($e->getMessage());
+        return;
+    }
 
-$response = $router->handle();
+    echo abort($e->getMessage(), $e->getCode());
 
-
-echo response($response);
+}
 
 
 
