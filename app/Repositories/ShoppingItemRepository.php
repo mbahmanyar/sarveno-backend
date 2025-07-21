@@ -17,9 +17,15 @@ class ShoppingItemRepository
         return $this->db->query("SELECT * FROM shopping_items")->fetchAll();
     }
 
-    public function find($id)
+    public function find($id): array
     {
-        return $this->db->query("SELECT * FROM shopping_items WHERE id={$id}")->fetch();
+        $result = $this->db->query("SELECT * FROM shopping_items WHERE id={$id}")->fetch();
+
+        if (!$result) {
+            throw new \App\Exception\NotFoundException("Item not found", 404);
+        }
+
+        return $result;
     }
 
     public function create(array $data): bool

@@ -31,7 +31,7 @@ class Database
         return $this->statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function fetch(): array
+    public function fetch(): array|false
     {
         return $this->statement->fetch(PDO::FETCH_ASSOC);
     }
