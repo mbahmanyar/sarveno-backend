@@ -17,9 +17,34 @@ class ShoppingItemRepository
         return $this->db->query("SELECT * FROM shopping_items")->fetchAll();
     }
 
-    public function findById($id)
+    public function find($id)
     {
         return $this->db->query("SELECT * FROM shopping_items WHERE id={$id}")->fetch();
+    }
+
+    public function create(array $data): bool
+    {
+        $name = $data['name'];
+        $price = $data['price'];
+        $quantity = $data['quantity'];
+
+        return $this->db->query("INSERT INTO shopping_items (name, price, quantity) VALUES ('{$name}', {$price}, {$quantity})");
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        $updateQuery = array_reduce(array_keys($data), function ($carry, $item) use ($data) {
+            return $carry . "{$item}={$data[$item]}, ";
+        }, '');
+
+        $updateQuery = trim($updateQuery, ', ');
+
+        return $this->db->query("UPDATE shopping_items SET {$updateQuery} WHERE id={$id}");
+    }
+
+    public function delete(int $id): bool
+    {
+        return $this->db->query("DELETE FROM shopping_items WHERE id={$id}");
     }
 
 }
