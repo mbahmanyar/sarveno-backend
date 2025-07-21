@@ -8,15 +8,24 @@ use Core\Application;
 class ShoppingItemsController
 {
 
-    public function index()
+    public function __construct(
+        private ShoppingItemRepository $shoppingItemRepository
+    )
     {
-        return Application::$container->resolve(ShoppingItemRepository::class)->get();
     }
 
-    public function show()
+    public function index()
     {
-        var_dump("show");
-        die();
+        return $this->shoppingItemRepository->get();
+    }
+
+    public function show(int $id)
+    {
+        $item = $this->shoppingItemRepository->find($id);
+        if (!$item) {
+            return abort("Item not found", 404);
+        }
+        return $item;
     }
 
 }
