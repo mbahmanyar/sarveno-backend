@@ -14,8 +14,12 @@
     },
     "autoload": {
         "psr-4" : {
-            "Core\\": "core/"
-        }
+            "Core\\": "core/",
+            "App\\": "app/"
+        },
+        "files": [
+            "core/helper.php"
+        ]
     }
 
 }
