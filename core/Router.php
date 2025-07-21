@@ -57,7 +57,9 @@ class Router
             throw new NotFoundException("Route not found", 404);
         }
 
-        return call_user_func_array([new $foundRoute['controller'][0], $foundRoute['controller'][1]], $foundRoute['params']);
+        $controller = Application::container()->resolve($foundRoute['controller'][0]);
+
+        return call_user_func_array([$controller, $foundRoute['controller'][1]], $foundRoute['params']);
     }
 
 }

@@ -16,12 +16,33 @@ class Container implements ContainerInterface
         $this->services[$name] = $service;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function resolve(string $name)
     {
-        if (!isset($this->services[$name])) {
-            throw new Exception("Service not found: " . $name);
+        if (isset($this->services[$name])) {
+            return $this->services[$name];
         }
-        return $this->services[$name];
+
+        // If the service is not bound, auto bind it
+        if (class_exists($name)) {
+            $reflection = new \ReflectionClass($name);
+            $constructor = $reflection->getConstructor();
+            if ($constructor) {
+                $params = [];
+                foreach ($constructor->getParameters() as $param) {
+                    if ($param->getType() && !$param->getType()->isBuiltin()) {
+                        $params[] = $this->resolve($param->getType()->getName());
+                    }
+                }
+                return $reflection->newInstanceArgs($params);
+            }
+            return new $name();
+        }
+
+
+        throw new Exception("Service not found: " . $name);
     }
 
 }
