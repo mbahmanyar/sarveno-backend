@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
-class ShoppingItem
+use App\Exception\InvalidPropertyException;
+use Core\Model;
+
+class ShoppingItem extends Model
 {
     public function __construct(
         public ?int    $id,
@@ -15,5 +18,19 @@ class ShoppingItem
     )
     {
     }
+
+    public static function initiate(array $properties): static
+    {
+        return new static(
+            $properties['id'] ?? null,
+            $properties['name'] ?? '',
+            $properties['note'] ?? '',
+            $properties['quantity'] ?? 0,
+            $properties['is_checked'] ?? false,
+            $properties['created_at'] ?? null,
+            $properties['updated_at'] ?? null
+        );
+    }
+
 
 }

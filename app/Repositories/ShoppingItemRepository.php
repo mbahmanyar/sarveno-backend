@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
-class ShoppingItemRepository
+use App\Models\ShoppingItem;
+
+class ShoppingItemRepository implements ShoppingItemRepositoryInterface
 {
 
     public function __construct(
@@ -11,13 +13,18 @@ class ShoppingItemRepository
     {
     }
 
-
+    /**
+     * @return Array<ShoppingItem>
+     */
     public function get(): array
     {
-        return $this->db->query("SELECT * FROM shopping_items")->fetchAll();
+        return array_map(
+            fn($item) => ShoppingItem::initiate($item),
+            $this->db->query("SELECT * FROM shopping_items")->fetchAll()
+        );
     }
 
-    public function find($id): array
+    public function find($id): ShoppingItem
     {
         $result = $this->db->query("SELECT * FROM shopping_items WHERE id={$id}")->fetch();
 
@@ -25,39 +32,48 @@ class ShoppingItemRepository
             throw new \App\Exception\NotFoundException("Item not found", 404);
         }
 
-        return $result;
+        return ShoppingItem::initiate($result);
     }
 
-    public function create(array $data): array
+    public function save(ShoppingItem $shoppingItem): ShoppingItem
     {
-        $name = $data['name'];
-        $note = $data['note'];
-        $quantity = $data['quantity'];
+        if (!$shoppingItem->id) {
+            return $this->update($shoppingItem);
+        }
 
+        return $this->create($shoppingItem);
+    }
+
+    public function create(ShoppingItem $shoppingItem): ShoppingItem
+    {
         $this->db->query("INSERT INTO shopping_items (name, note, quantity) VALUES (:name, :note, :quantity)", [
-            'name' => $name,
-            'note' => $note,
-            'quantity' => $quantity
+            'name' => $shoppingItem->name,
+            'note' => $shoppingItem->note,
+            'quantity' => $shoppingItem->quantity
         ]);
 
-        return $this->find($this->db->lastInsertId());
+        $shoppingItem->id = $this->db->lastInsertId();
+
+        return $shoppingItem;
     }
 
-    public function update(int $id, array $data): bool
+    public function update(ShoppingItem $shoppingItem): ShoppingItem
     {
-        // todo must handle with model
-        $updateQuery = array_reduce(array_keys($data), function ($carry, $item) use ($data) {
-            return $carry . "{$item}={$data[$item]}, ";
-        }, '');
 
-        $updateQuery = trim($updateQuery, ', ');
+        $this->db->query("UPDATE shopping_items SET name=:name, note=:note, quantity=:quantity, updated_at=:updated_at WHERE id=:id", [
+            'name' => $shoppingItem->name,
+            'note' => $shoppingItem->note,
+            'quantity' => $shoppingItem->quantity,
+            'id' => $shoppingItem->id,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
 
-        return $this->db->query("UPDATE shopping_items SET {$updateQuery} WHERE id={$id}");
+        return $shoppingItem;
     }
 
-    public function delete(int $id): bool
+    public function delete(ShoppingItem $shoppingItem): bool
     {
-        return $this->db->query("DELETE FROM shopping_items WHERE id=:id", ['id' => $id]);
+        return $this->db->query("DELETE FROM shopping_items WHERE id=:id", ['id' => $shoppingItem->id]);
     }
 
 }

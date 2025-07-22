@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\ShoppingItem;
 use App\Repositories\ShoppingItemRepository;
-use Core\Application;
 
 class ShoppingItemsController
 {
@@ -45,13 +45,17 @@ class ShoppingItemsController
             return abort("Invalid input", 400);
         }
 
-        $item = $this->shoppingItemRepository->create($data);
+        $model = ShoppingItem::initiate($data);
+
+        $item = $this->shoppingItemRepository->save($model);
+
         if (!$item) {
+            // todo must change
             return abort("Failed to create item", 500);
         }
 
         echo response($item, 201);
     }
-    
-    
+
+
 }
