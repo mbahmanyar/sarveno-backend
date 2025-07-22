@@ -52,7 +52,7 @@ class ShoppingItemsController
     {
         $data = json_decode(file_get_contents('php://input'), true);
 
-//        todo add validation
+        $data = CreateItemForm::validate($data);
 
         $model = $this->shoppingItemRepository->findOrFail($id);
 

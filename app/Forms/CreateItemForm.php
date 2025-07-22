@@ -4,12 +4,13 @@ namespace App\Forms;
 
 
 use App\Exception\ValidationException;
+use Core\Forms\Form;
 use Core\Validator;
 
-class CreateItemForm
+class CreateItemForm extends Form
 {
 
-    protected array $errors = [];
+
 
     public function __construct(
         public string $name,
@@ -46,7 +47,7 @@ class CreateItemForm
 
         $instance = new static(
             $attributes['name'] ?? "",
-            $attributes['quantity'] ?? -1,
+            $attributes['quantity'] ?? 0,
             $attributes['note'] ?? "",
             $attributes['is_checked'] ?? false
         );
@@ -58,15 +59,7 @@ class CreateItemForm
         return $instance->toArray();
     }
 
-    private function failed(): bool
-    {
-        return count($this->errors) > 0;
-    }
 
-    private function toArray()
-    {
-        return get_object_vars($this);
-    }
 
 
 }
