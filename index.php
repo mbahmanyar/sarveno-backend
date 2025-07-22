@@ -40,6 +40,11 @@ try {
         return;
     }
 
+    if ($e instanceof \App\Exception\ValidationException) {
+        echo abort($e->getMessage(), 427, $e->errors);
+        return;
+    }
+
     echo abort($e->getMessage(), $e->getCode());
 
 }

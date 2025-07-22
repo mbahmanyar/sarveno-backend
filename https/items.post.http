@@ -9,4 +9,15 @@ Content-Type: application/json
   "quantity": 1
 }
 
+### GET request to example server
+POST http://localhost:8888/api/shopping-items
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "",
+  "note": "",
+  "quantity": -3
+}
+
 ###

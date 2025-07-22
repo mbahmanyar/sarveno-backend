@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Forms\CreateItemForm;
 use App\Models\ShoppingItem;
 use App\Repositories\ShoppingItemRepository;
 
@@ -38,19 +39,11 @@ class ShoppingItemsController
             $data = json_decode(file_get_contents('php://input'), true);
         }
 
-
-        if (empty($data['name']) || empty($data['quantity'])) {
-            return abort("Invalid input", 400);
-        }
+        $data = CreateItemForm::validate($data);
 
         $model = ShoppingItem::initiate($data);
 
         $item = $this->shoppingItemRepository->save($model);
-
-        if (!$item) {
-            // todo must change
-            return abort("Failed to create item", 500);
-        }
 
         echo response($item, 201);
     }

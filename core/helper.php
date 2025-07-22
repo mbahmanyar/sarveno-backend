@@ -17,20 +17,26 @@ function response(object|array $data, ?string $message = null, int $code = 200):
 }
 
 
-function abort(string $message, int $code = 404)
+function abort(string $message, int $code = 400, ?array $errors = null): string
 {
-    http_response_code(404);
+    http_response_code($code);
     header('Content-Type: application/json; charset=utf-8');
 
-    return json_encode(
-        [
-            "code" => $code,
-            'message' => $message,
-            "success" => false
-        ]
-    );
-}
+    $array = [
+        "code" => $code,
+        'message' => $message,
+        "success" => false
+    ];
 
+    if ($errors) {
+        $array = [...$array, 'errors' => $errors];
+    }
+
+    return json_encode(
+        $array
+    );
+
+}
 
 function dd($data): void
 {
