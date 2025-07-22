@@ -1,0 +1,13 @@
+### GET request to example server
+PUT http://localhost:8888/api/shopping-items/16
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "New Item 4",
+  "note": "test note 4",
+  "quantity": 4,
+  "is_checked": true
+}
+
+###

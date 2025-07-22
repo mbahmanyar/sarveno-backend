@@ -18,31 +18,38 @@ class Router
     {
     }
 
-    public function get(string $uri, array $controller)
+    private function addRoute(string $uri, array $controller, string $method)
     {
         $this->routes[] = [
             "pattern" => $uri,
-            "method" => "GET",
+            "method" => $method,
             "controller" => $controller
         ];
+    }
+
+    public function get(string $uri, array $controller)
+    {
+        $this->addRoute($uri, $controller, "GET");
     }
 
     public function post(string $uri, array $controller)
     {
-        $this->routes[] = [
-            "pattern" => $uri,
-            "method" => "POST",
-            "controller" => $controller
-        ];
+        $this->addRoute($uri, $controller, "POST");
     }
 
     public function delete(string $uri, array $controller)
     {
-        $this->routes[] = [
-            "pattern" => $uri,
-            "method" => "DELETE",
-            "controller" => $controller
-        ];
+        $this->addRoute($uri, $controller, "DELETE");
+    }
+
+    public function patch(string $uri, array $controller)
+    {
+        $this->addRoute($uri, $controller, "PATCH");
+    }
+
+    public function put(string $uri, array $controller)
+    {
+        $this->addRoute($uri, $controller, "PUT");
     }
 
     public function findRoute()

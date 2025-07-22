@@ -55,6 +55,22 @@ class ShoppingItemsController
         echo response($item, 201);
     }
 
+    public function update(int $id)
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+//        todo add validation
+
+        $model = $this->shoppingItemRepository->findOrFail($id);
+
+        $model->fill($data);
+
+        $item = $this->shoppingItemRepository->save($model);
+
+        echo response($item, 200);
+    }
+
+
     public function delete(int $id)
     {
         $shoppingItem = $this->shoppingItemRepository->findOrFail($id);
