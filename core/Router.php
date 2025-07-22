@@ -27,11 +27,12 @@ class Router
         ];
     }
 
-    public function post(string $uri, ?Closure $param)
+    public function post(string $uri, array $controller)
     {
         $this->routes[] = [
             "pattern" => $uri,
             "method" => "POST",
+            "controller" => $controller
         ];
     }
 

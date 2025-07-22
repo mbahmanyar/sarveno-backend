@@ -24,8 +24,11 @@ try {
     $router = \Core\Application::container()->resolve(Router::class);
     $router->get('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'index']);
     $router->get('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'show']);
+    $router->post('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'store']);
+
+
     $response = $router->handle();
-    echo response($response);
+
 
 } catch (Exception $e) {
 

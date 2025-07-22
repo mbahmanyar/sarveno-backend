@@ -28,17 +28,24 @@ class ShoppingItemRepository
         return $result;
     }
 
-    public function create(array $data): bool
+    public function create(array $data): array
     {
         $name = $data['name'];
-        $price = $data['price'];
+        $note = $data['note'];
         $quantity = $data['quantity'];
 
-        return $this->db->query("INSERT INTO shopping_items (name, price, quantity) VALUES ('{$name}', {$price}, {$quantity})");
+        $this->db->query("INSERT INTO shopping_items (name, note, quantity) VALUES (:name, :note, :quantity)", [
+            'name' => $name,
+            'note' => $note,
+            'quantity' => $quantity
+        ]);
+
+        return $this->find($this->db->lastInsertId());
     }
 
     public function update(int $id, array $data): bool
     {
+        // todo must handle with model
         $updateQuery = array_reduce(array_keys($data), function ($carry, $item) use ($data) {
             return $carry . "{$item}={$data[$item]}, ";
         }, '');
@@ -50,7 +57,7 @@ class ShoppingItemRepository
 
     public function delete(int $id): bool
     {
-        return $this->db->query("DELETE FROM shopping_items WHERE id={$id}");
+        return $this->db->query("DELETE FROM shopping_items WHERE id=:id", ['id' => $id]);
     }
 
 }
