@@ -22,10 +22,8 @@ class ShoppingItemsController
 
     public function show(int $id)
     {
-        $item = $this->shoppingItemRepository->find($id);
-        if (!$item) {
-            return abort("Item not found", 404);
-        }
+        $item = $this->shoppingItemRepository->findOrFail($id);
+
         echo response($item);
     }
 

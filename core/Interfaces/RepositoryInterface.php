@@ -8,7 +8,9 @@ interface RepositoryInterface
 {
     public function get(): array;
 
-    public function find($id);
+    public function find(int|string $id): ShoppingItem|null;
+
+    public function findOrFail(int|string $id): ShoppingItem;
 
     public function save(ShoppingItem $shoppingItem): ShoppingItem;
 

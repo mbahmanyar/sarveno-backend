@@ -24,7 +24,7 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
         );
     }
 
-    public function find($id): ShoppingItem
+    public function find(int|string $id): ShoppingItem|null
     {
         $result = $this->db->query("SELECT * FROM shopping_items WHERE id={$id}")->fetch();
 
@@ -32,7 +32,16 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
             throw new \App\Exception\NotFoundException("Item not found", 404);
         }
 
-        return ShoppingItem::initiate($result);
+        return $result ? ShoppingItem::initiate($result) : null;
+    }
+
+    public function findOrFail(int|string $id): ShoppingItem
+    {
+        $item = $this->find($id);
+        if (!$item) {
+            throw new \App\Exception\NotFoundException("Item not found", 404);
+        }
+        return $item;
     }
 
     public function save(ShoppingItem $shoppingItem): ShoppingItem
