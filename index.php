@@ -22,12 +22,12 @@ $container = new \Core\Container();
 
 try {
     $router = \Core\Application::container()->resolve(Router::class);
-    $router->get('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'index']);
-    $router->get('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'show']);
-    $router->post('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'store']);
-    $router->put('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'update']);
-    $router->delete('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'delete']);
-    $router->patch('/^\/api\/shopping-items\/(\d+)\/toggle-check$/', [\App\Controllers\ToggleCheckShoppingItemsController::class, 'update']);
+    $router->get('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index']);
+    $router->get('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'show']);
+    $router->post('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'store']);
+    $router->put('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'update']);
+    $router->delete('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'delete']);
+    $router->patch('/api/shopping-items/(\d+)/toggle-check', [\App\Controllers\ToggleCheckShoppingItemsController::class, 'update']);
 
 
     $response = $router->handle();

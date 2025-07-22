@@ -20,6 +20,8 @@ class Router
 
     private function addRoute(string $uri, array $controller, string $method)
     {
+        $uri = $this->compileUri($uri);
+
         $this->routes[] = [
             "pattern" => $uri,
             "method" => $method,
@@ -77,6 +79,12 @@ class Router
         $controller = Application::container()->resolve($foundRoute['controller'][0]);
 
         return call_user_func_array([$controller, $foundRoute['controller'][1]], $foundRoute['params']);
+    }
+
+    private function compileUri(string $uri)
+    {
+        $uri = str_replace("/", "\/", $uri); // remove leading slash
+        return "/^{$uri}$/";
     }
 
 }
