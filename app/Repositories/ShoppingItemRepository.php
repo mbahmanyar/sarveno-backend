@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exception\NotFoundException;
 use App\Models\ShoppingItem;
 
 class ShoppingItemRepository implements ShoppingItemRepositoryInterface
@@ -35,6 +36,9 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
         return $result ? ShoppingItem::initiate($result) : null;
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function findOrFail(int|string $id): ShoppingItem
     {
         $item = $this->find($id);
@@ -82,7 +86,8 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
 
     public function delete(ShoppingItem $shoppingItem): bool
     {
-        return $this->db->query("DELETE FROM shopping_items WHERE id=:id", ['id' => $shoppingItem->id]);
+        $this->db->query("DELETE FROM shopping_items WHERE id=:id", ['id' => $shoppingItem->id]);
+        return true;
     }
 
 }

@@ -25,6 +25,7 @@ try {
     $router->get('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'index']);
     $router->get('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'show']);
     $router->post('/^\/api\/shopping-items$/', [\App\Controllers\ShoppingItemsController::class, 'store']);
+    $router->delete('/^\/api\/shopping-items\/(\d+)$/', [\App\Controllers\ShoppingItemsController::class, 'delete']);
 
 
     $response = $router->handle();

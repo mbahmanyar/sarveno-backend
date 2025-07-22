@@ -36,6 +36,15 @@ class Router
         ];
     }
 
+    public function delete(string $uri, array $controller)
+    {
+        $this->routes[] = [
+            "pattern" => $uri,
+            "method" => "DELETE",
+            "controller" => $controller
+        ];
+    }
+
     public function findRoute()
     {
 

@@ -55,5 +55,14 @@ class ShoppingItemsController
         echo response($item, 201);
     }
 
+    public function delete(int $id)
+    {
+        $shoppingItem = $this->shoppingItemRepository->findOrFail($id);
+
+        $this->shoppingItemRepository->delete($shoppingItem);
+
+        response(data: $shoppingItem, code: 204);
+    }
+
 
 }
