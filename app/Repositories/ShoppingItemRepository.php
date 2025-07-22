@@ -50,7 +50,7 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
 
     public function save(ShoppingItem $shoppingItem): ShoppingItem
     {
-        if (!$shoppingItem->id) {
+        if ($shoppingItem->id) {
             return $this->update($shoppingItem);
         }
 
