@@ -59,10 +59,11 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
 
     public function create(ShoppingItem $shoppingItem): ShoppingItem
     {
-        $this->db->query("INSERT INTO shopping_items (name, note, quantity) VALUES (:name, :note, :quantity)", [
+        $this->db->query("INSERT INTO shopping_items (name, note, quantity, is_checked) VALUES (:name, :note, :quantity, :is_checked)", [
             'name' => $shoppingItem->name,
             'note' => $shoppingItem->note,
-            'quantity' => $shoppingItem->quantity
+            'quantity' => $shoppingItem->quantity,
+            'is_checked' => (int) $shoppingItem->is_checked,
         ]);
 
         $shoppingItem->id = $this->db->lastInsertId();
@@ -73,11 +74,12 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
     public function update(ShoppingItem $shoppingItem): ShoppingItem
     {
 
-        $this->db->query("UPDATE shopping_items SET name=:name, note=:note, quantity=:quantity, updated_at=:updated_at WHERE id=:id", [
+        $this->db->query("UPDATE shopping_items SET name=:name, note=:note, quantity=:quantity, is_checked=:is_checked, updated_at=:updated_at WHERE id=:id", [
             'name' => $shoppingItem->name,
             'note' => $shoppingItem->note,
             'quantity' => $shoppingItem->quantity,
             'id' => $shoppingItem->id,
+            'is_checked' => (int) $shoppingItem->is_checked,
             'updated_at' => date('Y-m-d H:i:s')
         ]);
 

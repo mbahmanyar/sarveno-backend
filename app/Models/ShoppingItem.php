@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Exception\InvalidPropertyException;
 use Core\Model;
 
 class ShoppingItem extends Model
