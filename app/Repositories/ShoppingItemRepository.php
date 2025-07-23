@@ -29,10 +29,6 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
     {
         $result = $this->db->query("SELECT * FROM shopping_items WHERE id={$id}")->fetch();
 
-        if (!$result) {
-            throw new \App\Exception\NotFoundException("Item not found", 404);
-        }
-
         return $result ? ShoppingItem::initiate($result) : null;
     }
 
