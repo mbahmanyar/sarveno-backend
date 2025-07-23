@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Exception\NotFoundException;
 use App\Models\ShoppingItem;
+use App\Models\User;
 
 class ShoppingItemRepository implements ShoppingItemRepositoryInterface
 {
@@ -30,6 +31,17 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
         $result = $this->db->query("SELECT * FROM shopping_items WHERE id={$id}")->fetch();
 
         return $result ? ShoppingItem::initiate($result) : null;
+    }
+
+    public function findByUserId(int|User $user): array
+    {
+
+        $id = $user instanceof User ? $user->id : $user;
+
+        return array_map(
+            fn($item) => ShoppingItem::initiate($item),
+            $this->db->query("SELECT * FROM shopping_items Where user_id=:user_id", ['user_id' => $id])->fetchAll()
+        );
     }
 
     /**

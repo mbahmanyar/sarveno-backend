@@ -5,19 +5,21 @@ namespace App\Controllers;
 use App\Forms\CreateItemForm;
 use App\Models\ShoppingItem;
 use App\Repositories\ShoppingItemRepository;
+use Core\Interfaces\AuthenticationInterface;
 
 class ShoppingItemsController
 {
 
     public function __construct(
-        private ShoppingItemRepository $shoppingItemRepository
+        private ShoppingItemRepository $shoppingItemRepository,
+        private AuthenticationInterface $currentUser
     )
     {
     }
 
     public function index()
     {
-        $items = $this->shoppingItemRepository->get();
+        $items = $this->shoppingItemRepository->findByUserId($this->currentUser->id);
         echo response($items);
     }
 
