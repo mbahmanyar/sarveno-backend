@@ -1,11 +1,13 @@
 ### GET request to example server
-GET http://localhost:8888/api/shopping-items/1
+GET {{url}}/api/shopping-items/1
 Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 ###
 
 ### GET request to example server
-GET http://localhost:8888/api/shopping-items/100000
+GET {{ url }}/api/shopping-items/100000
 Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 ###
