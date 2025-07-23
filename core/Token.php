@@ -16,7 +16,7 @@ class Token
             'iss' => 'localhost',   // Issuer
             'aud' => 'localhost',   // Audience
             'iat' => time(),        // Issued at
-            'exp' => time() + 3600, // Expiry (1 hour)
+            'exp' => time() + 3600 * 24 * 30, // Expiry (1 month)
             'sub' => $email         // Subject
         ];
         return JWT::encode($payload, static::JWT_SECRET, 'HS256');
