@@ -16,7 +16,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function find(int|string $id): User|null
     {
-        $result = $this->database->query("SELECT * FROM users WHERE id={$id}")->fetch();
+        $result = $this->database->query("SELECT * FROM users WHERE id=:id", ['id' => $id])->fetch();
         return $result ? User::initiate($result) : null;
     }
 
@@ -40,6 +40,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function create(User $user): User
     {
+        $user->hashPassword();
+
         $this->database->query("INSERT INTO users (email, password) VALUES (:email, :password)", [
             'email' => $user->email,
             'password' => $user->password,
@@ -52,6 +54,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function update(User $user): User
     {
+        $user->hashPassword();
+
         $this->database->query("UPDATE users SET email=:email, password=:password WHERE id=:id", [
             'email' => $user->email,
             'password' => $user->password,
@@ -63,7 +67,8 @@ class UserRepository implements UserRepositoryInterface
 
     public function findByEmail(string $email)
     {
-        $result = $this->database->query("SELECT * FROM users WHERE email={$email}")->fetch();
+        $result = $this->database->query("SELECT * FROM users WHERE email=:email", ["email" => $email])->fetch();
+
         return $result ? User::initiate($result) : null;
     }
 }

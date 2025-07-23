@@ -7,16 +7,10 @@ use Core\Model;
 class User extends Model
 {
 
-    public string $password {
-        set(string $value) {
-            $this->password = password_hash($value, PASSWORD_BCRYPT);
-        }
-    }
-
     public function __construct(
         public ?int   $id,
         public string $email,
-        string        $password,
+        public string $password,
     )
     {
         $this->password = $password;
@@ -32,5 +26,10 @@ class User extends Model
 
 
         return $object;
+    }
+
+    public function hashPassword() : void
+    {
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
     }
 }
