@@ -30,7 +30,12 @@ class Token
     public function extractTokenFromHeader(): string|null
     {
         $headers = getallheaders();
-        $token = array_find($headers, fn($value) => stripos($value, 'Bearer'));
+        $token = array_find($headers, fn($value) => stripos($value, 'Bearer') > -1);
+
+        if (!$token) {
+            return null;
+        }
+
         if (preg_match('/Bearer\s(\S+)/i', $token, $matches)) {
             return $matches[1];
         }

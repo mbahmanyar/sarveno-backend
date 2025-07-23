@@ -28,12 +28,14 @@ $container = new \Core\Container();
 
 try {
     $router = \Core\Application::container()->resolve(Router::class);
-    $router->get('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index']);
-    $router->get('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'show']);
-    $router->post('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'store']);
-    $router->put('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'update']);
-    $router->delete('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'delete']);
-    $router->patch('/api/shopping-items/(\d+)/toggle-check', [\App\Controllers\ToggleCheckShoppingItemsController::class, 'update']);
+    $router->get('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index'],
+        [\App\Middlewares\Authentication::class]
+    );
+    $router->get('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'show'], [\App\Middlewares\Authentication::class]);
+    $router->post('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'store'], [\App\Middlewares\Authentication::class]);
+    $router->put('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class]);
+    $router->delete('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'delete'], [\App\Middlewares\Authentication::class]);
+    $router->patch('/api/shopping-items/(\d+)/toggle-check', [\App\Controllers\ToggleCheckShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class]);
 
 
     $router->post('/api/register', [\App\Controllers\AuthController::class, 'store']);
@@ -46,12 +48,17 @@ try {
 
     if ($e instanceof \App\Exception\NotFoundException) {
         echo abort($e->getMessage());
-        return;
+        exit;
     }
 
     if ($e instanceof \App\Exception\ValidationException) {
-        echo abort($e->getMessage(), 427, $e->errors);
-        return;
+        echo abort($e->getMessage(), 422, $e->errors);
+        exit;
+    }
+
+    if ($e instanceof \App\Exception\UnauthenticatedException) {
+        echo abort($e->getMessage(), $e->getCode());
+        exit;
     }
 
     echo abort($e->getMessage(), $e->getCode());

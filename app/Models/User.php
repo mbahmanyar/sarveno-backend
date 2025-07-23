@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Core\Interfaces\AuthenticationInterface;
 use Core\Model;
 
-class User extends Model
+class User extends Model implements AuthenticationInterface
 {
 
     public function __construct(
