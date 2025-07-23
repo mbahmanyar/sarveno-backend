@@ -40,7 +40,6 @@ class UserRepository implements UserRepositoryInterface
 
     public function create(User $user): User
     {
-        $user->hashPassword();
 
         $this->database->query("INSERT INTO users (email, password) VALUES (:email, :password)", [
             'email' => $user->email,
@@ -54,7 +53,6 @@ class UserRepository implements UserRepositoryInterface
 
     public function update(User $user): User
     {
-        $user->hashPassword();
 
         $this->database->query("UPDATE users SET email=:email, password=:password WHERE id=:id", [
             'email' => $user->email,

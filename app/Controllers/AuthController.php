@@ -49,9 +49,11 @@ class AuthController
 
         $data = CreateSignUpForm::validate($data);
 
-        $model = User::initiate($data);
+        $user = User::initiate($data);
 
-        $item = $this->userRepository->save($model);
+        $user->hashPassword();
+
+        $item = $this->userRepository->save($user);
 
         echo response($item, 201);
     }
