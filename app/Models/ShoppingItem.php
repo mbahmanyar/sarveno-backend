@@ -31,18 +31,6 @@ class ShoppingItem extends Model
         );
     }
 
-    public function fill(array $properties)
-    {
-        foreach ($properties as $key => $property) {
-            if (!property_exists($this, $key)) {
-                throw new \InvalidArgumentException("Property {$key} does not exist on " . static::class);
-            }
-
-            if (isset($this->{$key})) {
-                $this->{$key} = $property;
-            }
-        }
-    }
 
 
 }
