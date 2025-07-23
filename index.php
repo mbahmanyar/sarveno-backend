@@ -24,6 +24,8 @@ $container = new \Core\Container();
     new \App\Repositories\UserRepository(\Core\Application::container()->resolve(\Core\Database::class))
 );
 
+\Core\Application::bindToContainer(\Core\Token::class, new \Core\Token());
+
 try {
     $router = \Core\Application::container()->resolve(Router::class);
     $router->get('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index']);
@@ -35,6 +37,7 @@ try {
 
 
     $router->post('/api/register', [\App\Controllers\AuthController::class, 'store']);
+    $router->post('/api/login', [\App\Controllers\AuthController::class, 'index']);
 
     $response = $router->handle();
 
