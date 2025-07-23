@@ -19,6 +19,10 @@ $container = new \Core\Container();
     \App\Repositories\ShoppingItemRepository::class,
     new \App\Repositories\ShoppingItemRepository(\Core\Application::container()->resolve(\Core\Database::class))
 );
+\Core\Application::bindToContainer(
+    \App\Repositories\UserRepositoryInterface::class,
+    new \App\Repositories\UserRepository(\Core\Application::container()->resolve(\Core\Database::class))
+);
 
 try {
     $router = \Core\Application::container()->resolve(Router::class);
@@ -29,6 +33,8 @@ try {
     $router->delete('/api/shopping-items/(\d+)', [\App\Controllers\ShoppingItemsController::class, 'delete']);
     $router->patch('/api/shopping-items/(\d+)/toggle-check', [\App\Controllers\ToggleCheckShoppingItemsController::class, 'update']);
 
+
+    $router->post('/api/register', [\App\Controllers\AuthController::class, 'store']);
 
     $response = $router->handle();
 
