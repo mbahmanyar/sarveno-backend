@@ -8,6 +8,7 @@ use Core\Interfaces\MiddlewareInterface;
 class Router
 {
     private array $routes;
+    private array $matchedRoute;
 
 
     public function __construct(
@@ -17,6 +18,11 @@ class Router
     {
     }
 
+    public function getMatchedRouteParams() : array
+    {
+        return $this->matchedRoute['params'] ?? [];
+    }
+
     /**
      * @param string $uri
      * @param array $controller
@@ -24,15 +30,16 @@ class Router
      * @param Array<MiddlewareInterface> $middlewares
      * @return void
      */
-    private function addRoute(string $uri, array $controller, string $method, array $middlewares=[])
+    private function addRoute(string $uri, array $controller, string $method, array $middlewares = [])
     {
         $uri = $this->compileUri($uri);
 
         $this->routes[] = [
             "pattern" => $uri,
             "method" => $method,
-            "controller" => $controller,
-            "middleware" => $middlewares
+            "controller" => $controller[0],
+            "action" => $controller[1],
+            "middlewares" => $middlewares
         ];
     }
 
@@ -61,13 +68,15 @@ class Router
         $this->addRoute($uri, $controller, "PUT", $middlewares);
     }
 
-    public function findRoute()
+    public function findMatchedRoute(): void
     {
 
         foreach ($this->routes as $route) {
             if (preg_match($route['pattern'], $this->requestUri, $params) && $route['method'] === $this->requestMethod) {
                 array_shift($params);
-                return [...$route, "params" => $params];
+                $params = array_filter($params, fn($key) => !is_numeric($key), ARRAY_FILTER_USE_KEY);
+                $this->matchedRoute = [...$route, "params" => $params];
+                break;
             }
         }
     }
@@ -77,14 +86,15 @@ class Router
      */
     public function handle()
     {
-        $foundRoute = $this->findRoute();
+        /** @var ['pattern', 'method', 'controller', 'middleware', 'params'] $foundRoute */
+        $this->findMatchedRoute();
 
-        if (!$foundRoute) {
+        if (!$this->matchedRoute) {
             throw new NotFoundException("Route not found", 404);
         }
 
-        if ($foundRoute['middleware']) {
-            foreach ($foundRoute['middleware'] as $middleware) {
+        if ($this->matchedRoute['middlewares']) {
+            foreach ($this->matchedRoute['middlewares'] as $middleware) {
                 $middlewareInstance = Application::container()->resolve($middleware);
                 if (!$middlewareInstance instanceof MiddlewareInterface) {
                     throw new \Exception("Middleware must implement MiddlewareInterface");
@@ -93,13 +103,17 @@ class Router
             }
         }
 
-        $controller = Application::container()->resolve($foundRoute['controller'][0]);
+        $controller = Application::container()->resolve($this->matchedRoute['controller']);
 
-        return call_user_func_array([$controller, $foundRoute['controller'][1]], $foundRoute['params']);
+
+        return call_user_func_array([$controller, $this->matchedRoute['action']], $this->matchedRoute['params']);
     }
 
     private function compileUri(string $uri)
     {
+        $uri = preg_replace_callback("/{([^}]+)}/", function ($m) {
+            return '(?P<' . $m[1] . '>\d+)';
+        }, $uri); // remove leading slash
         $uri = str_replace("/", "\/", $uri); // remove leading slash
         return "/^{$uri}$/";
     }
