@@ -45,3 +45,14 @@ function dd($data): void
     echo "</pre>";
     die();
 }
+
+/**
+ * Return the full path of a file
+ *
+ * @param string $path
+ * @return string
+ */
+function path(string $path) : string
+{
+    return Base_DIR . $path;
+}

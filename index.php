@@ -5,6 +5,8 @@ use Core\Router;
 
 require 'vendor/autoload.php';
 
+const Base_DIR = __DIR__;
+
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
@@ -40,6 +42,10 @@ $container = new \Core\Container();
 
     $router->post('/api/register', [\App\Controllers\AuthController::class, 'store']);
     $router->post('/api/login', [\App\Controllers\AuthController::class, 'index']);
+
+    $router->get('/register', [\App\Controllers\AuthController::class, 'create']);
+
+
 
     $response = $router->handle();
 
