@@ -44,6 +44,7 @@ $container = new \Core\Container();
     $router->post('/api/login', [\App\Controllers\AuthController::class, 'index']);
 
     $router->get('/register', [\App\Controllers\AuthController::class, 'create']);
+    $router->get('/login', [\App\Controllers\AuthController::class, 'show']);
 
 
 

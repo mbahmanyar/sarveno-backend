@@ -64,4 +64,10 @@ class AuthController
         require path(DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'register.php');
     }
 
+
+    public function show()
+    {
+        require path(DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'login.php');
+    }
+
 }
