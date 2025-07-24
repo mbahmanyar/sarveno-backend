@@ -1,4 +1,5 @@
 /vendor/
 .idea
 /https/http-client.env.json
+/node_modules
 
