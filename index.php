@@ -47,10 +47,10 @@ try {
     $response = $router->handle();
 
 
-} catch (Exception $e) {
+} catch (Throwable $e) {
 
     if ($e instanceof \App\Exception\NotFoundException) {
-        echo abort($e->getMessage());
+        echo abort($e->getMessage(), 404);
         exit;
     }
 
@@ -64,7 +64,8 @@ try {
         exit;
     }
 
-    echo abort($e->getMessage(), $e->getCode());
+    var_dump($e);
+    echo abort($e->getMessage());
 
 }
 
