@@ -5,7 +5,10 @@ use Core\Router;
 
 require 'vendor/autoload.php';
 
-const Base_DIR = __DIR__;
+
+const BASE_DIR = __DIR__;
+
+(\Dotenv\Dotenv::createImmutable(BASE_DIR))->load();
 
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -28,7 +31,7 @@ $container = new \Core\Container();
 
 \Core\Application::bindToContainer(\Core\Token::class, new \Core\Token());
 
-//try {
+try {
     $router = \Core\Application::container()->resolve(Router::class);
     $router->get('/api/shopping-items/{id}', [\App\Controllers\Api\ShoppingItemsController::class, 'show'], [\App\Middlewares\Authentication::class]);
     $router->get('/api/shopping-items', [\App\Controllers\Api\ShoppingItemsController::class, 'index'],
@@ -52,27 +55,26 @@ $container = new \Core\Container();
     $response = $router->handle();
 
 
-//
-//} catch (Exception $e) {
-//
-//    if ($e instanceof \App\Exception\NotFoundException) {
-//        echo abort($e->getMessage());
-//        exit;
-//    }
-//
-//    if ($e instanceof \App\Exception\ValidationException) {
-//        echo abort($e->getMessage(), 422, $e->errors);
-//        exit;
-//    }
-//
-//    if ($e instanceof \App\Exception\UnauthenticatedException) {
-//        echo abort($e->getMessage(), $e->getCode());
-//        exit;
-//    }
-//
-//    echo abort($e->getMessage(), $e->getCode());
-//
-//}
+} catch (Exception $e) {
+
+    if ($e instanceof \App\Exception\NotFoundException) {
+        echo abort($e->getMessage());
+        exit;
+    }
+
+    if ($e instanceof \App\Exception\ValidationException) {
+        echo abort($e->getMessage(), 422, $e->errors);
+        exit;
+    }
+
+    if ($e instanceof \App\Exception\UnauthenticatedException) {
+        echo abort($e->getMessage(), $e->getCode());
+        exit;
+    }
+
+    echo abort($e->getMessage(), $e->getCode());
+
+}
 
 
 

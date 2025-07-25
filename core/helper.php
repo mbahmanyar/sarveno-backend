@@ -46,19 +46,22 @@ function dd($data): void
     die();
 }
 
+
 /**
- * Return the full path of a file
+ * Return the full path to a file
  *
  * @param string $path
  * @return string
  */
 function path(string $path) : string
+
 {
     if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
         $path = DIRECTORY_SEPARATOR . $path;
     }
 
-    return Base_DIR . $path;
+
+    return BASE_DIR . $path;
 }
 
 /**
@@ -72,6 +75,37 @@ function view_path(string $path) : string
     if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
         $path = DIRECTORY_SEPARATOR . $path;
     }
-    return Base_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . $path;
+    return BASE_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . $path;
+}
+
+=======
+    return BASE_DIR . $path;
+}
+
+/**
+ * Retrieve configuration value from config file
+ *
+ * @param $key
+ * @param $default
+ * @return array|string|bool
+ * @throws Exception
+ */
+function config($key, $default = null): array|string|bool
+{
+    $config = require path("app/config.php");
+
+    if (is_null($key)) {
+        throw new Exception("Key does not exist in config file.");
+    }
+
+    $key = explode('.', $key);
+    $config = array_reduce($key, function ($carry, $k) use ($default) {
+        if (!isset($carry[$k])) {
+            return $default;
+        }
+        return $carry[$k];
+    }, $config);
+
+    return $config ?? $default;
 }
 

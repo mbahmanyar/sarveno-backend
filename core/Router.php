@@ -11,6 +11,7 @@ class Router
     private array $matchedRoute = [];
 
 
+
     public function __construct(
         private readonly string $requestUri,
         private readonly string $requestMethod
