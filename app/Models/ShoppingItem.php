@@ -8,6 +8,7 @@ class ShoppingItem extends Model
 {
     public function __construct(
         public ?int    $id,
+        public int    $user_id, // Assuming user_id is not part of the model but used in repository
         public string  $name,
         public string  $note,
         public int     $quantity,
@@ -22,12 +23,13 @@ class ShoppingItem extends Model
     {
         return new static(
             $properties['id'] ?? null,
+            $properties['user_id'] ?? null,
             $properties['name'] ?? '',
             $properties['note'] ?? '',
             $properties['quantity'] ?? 0,
             $properties['is_checked'] ?? false,
-            $properties['created_at'] ?? null,
-            $properties['updated_at'] ?? null
+            $properties['created_at'] ?? time(),
+            $properties['updated_at'] ?? time()
         );
     }
 
