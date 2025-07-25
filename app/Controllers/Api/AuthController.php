@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Forms\CreateSignUpForm;
 use App\Forms\LogInForm;
 use App\Models\User;
 use App\Repositories\UserRepositoryInterface;
-use Core\Application;
 use Core\Token;
 
 class AuthController

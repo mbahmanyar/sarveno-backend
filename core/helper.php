@@ -54,5 +54,24 @@ function dd($data): void
  */
 function path(string $path) : string
 {
+    if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
+        $path = DIRECTORY_SEPARATOR . $path;
+    }
+
     return Base_DIR . $path;
 }
+
+/**
+ * Return the full path to view folder
+ *
+ * @param string $path
+ * @return string
+ */
+function view_path(string $path) : string
+{
+    if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
+        $path = DIRECTORY_SEPARATOR . $path;
+    }
+    return Base_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . $path;
+}
+
