@@ -29,8 +29,9 @@ class User extends Model implements AuthenticationInterface
         return $object;
     }
 
-    public function hashPassword() : void
+    public function hashPassword() : User
     {
         $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+        return $this;
     }
 }
