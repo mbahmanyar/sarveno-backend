@@ -1,0 +1,10 @@
+### POST request
+POST {{ url }}/api/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "123"
+}
+###

@@ -45,3 +45,39 @@ function dd($data): void
     echo "</pre>";
     die();
 }
+
+function path($path): string
+{
+    if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
+        $path = DIRECTORY_SEPARATOR . $path;
+    }
+
+    return BASE_DIR . $path;
+}
+
+/**
+ * Retrieve configuration value from config file
+ *
+ * @param $key
+ * @param $default
+ * @return array|string|bool
+ * @throws Exception
+ */
+function config($key, $default = null): array|string|bool
+{
+    $config = require path("app/config.php");
+
+    if (is_null($key)) {
+        throw new Exception("Key does not exist in config file.");
+    }
+
+    $key = explode('.', $key);
+    $config = array_reduce($key, function ($carry, $k) use ($default) {
+        if (!isset($carry[$k])) {
+            return $default;
+        }
+        return $carry[$k];
+    }, $config);
+
+    return $config ?? $default;
+}

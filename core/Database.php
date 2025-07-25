@@ -13,9 +13,8 @@ class Database
     public function __construct()
     {
 
-        $this->connection = new PDO('mysql:host=localhost;dbname=sarveno', 'root', 'Meb@6057720');
+        $this->connection = new PDO("mysql:host=" . config('database.host') . ";dbname=" . config('database.name'), config("database.username"), config("database.password"));
 
-//        $items = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function query(string $query, ?array $params = null): static

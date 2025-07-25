@@ -1,5 +1,6 @@
 ### GET request to example server
 GET http://localhost:8888/api/shopping-items
 Accept: application/json
+Authorization: Bearer {{auth_token}}
 
 ###
