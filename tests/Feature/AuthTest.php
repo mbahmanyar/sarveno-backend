@@ -7,7 +7,7 @@ beforeEach(function () {
 
     $this->userRawData = [
         'email' => factory()->email(),
-        'password' => '123',
+        'password' => 'Aa123456',
     ];
 });
 
@@ -114,9 +114,48 @@ describe('Register user', function () {
 
     })->with(
         ['at least 8 character' => "We44123"],
-        ['empty password'=> ""],
-        ['password with spaces'=> "123 123"],
-        ['password with special characters'=> "123!@#DErfg"]
+        ['empty password' => ""],
+        ['password with spaces' => "123 123"],
+        ['password with special characters' => "123!@#DErfg"]
     );
+});
+
+describe('user sign in', function () {
+
+    beforeEach(function () {
+
+        // create a new user
+        $this->user = repository(\App\Repositories\UserRepository::class)
+            ->create(\App\Models\User::initiate($this->userRawData)->hashPassword());
+
+    });
+
+    afterEach(function () {
+        unset($this->user);
+    });
+
+    test('user can sign in with valid credentials', function () {
+
+        // login user
+
+        $response = client('POST', '/api/login', [
+            'json' => $this->userRawData
+        ]);
+
+
+        expect($response->getStatusCode())
+            ->toBe(200);
+
+        expect($response->getContent())
+            ->toBeSuccessFormat();
+
+        $responseArray = json_decode($response->getContent(), true);
+
+
+        expect($responseArray['data'])->toHaveKey('token');
+
+    });
+
+
 });
 
