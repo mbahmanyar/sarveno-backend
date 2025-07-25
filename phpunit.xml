@@ -15,4 +15,14 @@
             <directory>src</directory>
         </include>
     </source>
+    <php>
+        <env name="DATABASE_HOST" value="localhost"/>
+        <env name="DATABASE_NAME" value="sarveno"/>
+        <env name="DATABASE_USERNAME" value="root"/>
+        <env name="DATABASE_PASSWORD" value="Meb@6057720"/>
+        <env name="APP_BASE_DIR" value="./" />
+        <env name="APP_NAME" value="sarveno" />
+        <env name="APP_VERSION" value="1.0.0" />
+        <env name="APP_DEBUG" value="true" />
+    </php>
 </phpunit>

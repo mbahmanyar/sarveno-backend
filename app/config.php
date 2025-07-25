@@ -5,6 +5,7 @@ return [
         "name" => $_ENV['APP_NAME'],
         "version" => $_ENV['APP_VERSION'],
         "debug" => $_ENV['APP_DEBUG'],
+        "base_dir" => $_ENV['APP_BASE_DIR'],
     ],
     "database" => [
         "host" => $_ENV['DATABASE_HOST'],
