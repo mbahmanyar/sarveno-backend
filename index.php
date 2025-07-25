@@ -31,14 +31,14 @@ $container = new \Core\Container();
 
 try {
     $router = \Core\Application::container()->resolve(Router::class);
-    $router->get('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'show'], [\App\Middlewares\Authentication::class]);
+    $router->get('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'show'], [\App\Middlewares\Authentication::class, \App\Middlewares\Authorization::class]);
     $router->get('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index'],
         [\App\Middlewares\Authentication::class]
     );
     $router->post('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'store'], [\App\Middlewares\Authentication::class]);
-    $router->put('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class]);
-    $router->delete('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'delete'], [\App\Middlewares\Authentication::class]);
-    $router->patch('/api/shopping-items/{id}/toggle-check', [\App\Controllers\ToggleCheckShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class]);
+    $router->put('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class, \App\Middlewares\Authorization::class]);
+    $router->delete('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'delete'], [\App\Middlewares\Authentication::class, \App\Middlewares\Authorization::class]);
+    $router->patch('/api/shopping-items/{id}/toggle-check', [\App\Controllers\ToggleCheckShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class, \App\Middlewares\Authorization::class]);
 
 
     $router->post('/api/register', [\App\Controllers\AuthController::class, 'store']);
@@ -64,7 +64,11 @@ try {
         exit;
     }
 
-    var_dump($e);
+    if ($e instanceof \App\Exception\UnAuthorizedException) {
+        echo abort($e->getMessage(), 403);
+        exit;
+    }
+
     echo abort($e->getMessage());
 
 }

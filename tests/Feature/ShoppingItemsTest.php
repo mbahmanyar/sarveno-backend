@@ -175,3 +175,36 @@ test('user can edit his item', function () {
 
 
 });
+
+test('user can not see shopping item of other user', function () {
+
+    $newUser = repository(\App\Repositories\UserRepository::class)
+        ->create(\App\Models\User::initiate(
+            [
+                'email' => factory()->email(),
+                'password' => 'Aa123456'
+            ])->hashPassword());
+
+    $payload = [
+        'user_id' => $newUser->id,
+        'name' => factory()->name(),
+        'note' => factory()->paragraph(),
+        'quantity' => 3
+    ];
+
+    repository(\App\Repositories\ShoppingItemRepository::class)
+        ->create(
+            \App\Models\ShoppingItem::initiate($payload));
+
+    $response = client('GET', '/api/shopping-items/1', [
+        'headers' => [
+            'Authorization' => "Bearer {$this->token}"]
+
+    ]);
+
+    expect($response->getStatusCode())->toBe(403);
+
+    expect($response->getContent(false))
+        ->toBeErrorFormat(403);
+
+})->only();
