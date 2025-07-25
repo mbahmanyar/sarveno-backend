@@ -1,4 +1,13 @@
 <?php
+/**
+ * Function to return container
+ *
+ * @return \Core\Interfaces\ContainerInterface
+ */
+function app(): \Core\Interfaces\ContainerInterface
+{
+    return \Core\Application::container();
+}
 
 function response(object|array $data, ?string $message = null, int $code = 200): string
 {
