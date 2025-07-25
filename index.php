@@ -5,9 +5,11 @@ use Core\Router;
 
 require 'vendor/autoload.php';
 
+
 const BASE_DIR = __DIR__;
 
 (\Dotenv\Dotenv::createImmutable(BASE_DIR))->load();
+
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
@@ -31,18 +33,24 @@ $container = new \Core\Container();
 
 try {
     $router = \Core\Application::container()->resolve(Router::class);
-    $router->get('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'show'], [\App\Middlewares\Authentication::class]);
-    $router->get('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index'],
+    $router->get('/api/shopping-items/{id}', [\App\Controllers\Api\ShoppingItemsController::class, 'show'], [\App\Middlewares\Authentication::class]);
+    $router->get('/api/shopping-items', [\App\Controllers\Api\ShoppingItemsController::class, 'index'],
         [\App\Middlewares\Authentication::class]
     );
-    $router->post('/api/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'store'], [\App\Middlewares\Authentication::class]);
-    $router->put('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class]);
-    $router->delete('/api/shopping-items/{id}', [\App\Controllers\ShoppingItemsController::class, 'delete'], [\App\Middlewares\Authentication::class]);
-    $router->patch('/api/shopping-items/{id}/toggle-check', [\App\Controllers\ToggleCheckShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class]);
+    $router->post('/api/shopping-items', [\App\Controllers\Api\ShoppingItemsController::class, 'store'], [\App\Middlewares\Authentication::class]);
+    $router->put('/api/shopping-items/{id}', [\App\Controllers\Api\ShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class]);
+    $router->delete('/api/shopping-items/{id}', [\App\Controllers\Api\ShoppingItemsController::class, 'delete'], [\App\Middlewares\Authentication::class]);
+    $router->patch('/api/shopping-items/{id}/toggle-check', [\App\Controllers\Api\ToggleCheckShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class]);
 
 
-    $router->post('/api/register', [\App\Controllers\AuthController::class, 'store']);
-    $router->post('/api/login', [\App\Controllers\AuthController::class, 'index']);
+    $router->post('/api/register', [\App\Controllers\Api\AuthController::class, 'store']);
+    $router->post('/api/login', [\App\Controllers\Api\AuthController::class, 'index']);
+
+    $router->get('/register', [\App\Controllers\Api\AuthController::class, 'create']);
+    $router->get('/login', [\App\Controllers\Api\AuthController::class, 'show']);
+    $router->get('/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index']);
+
+
 
     $response = $router->handle();
 

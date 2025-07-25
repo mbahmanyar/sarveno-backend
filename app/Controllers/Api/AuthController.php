@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Api;
 
 use App\Forms\CreateSignUpForm;
 use App\Forms\LogInForm;
 use App\Models\User;
 use App\Repositories\UserRepositoryInterface;
-use Core\Application;
 use Core\Token;
 
 class AuthController
@@ -56,6 +55,18 @@ class AuthController
         $item = $this->userRepository->save($user);
 
         echo response($item, 201);
+    }
+
+
+    public function create()
+    {
+        require path(DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'register.php');
+    }
+
+
+    public function show()
+    {
+        require path(DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'login.php');
     }
 
 }

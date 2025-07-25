@@ -46,12 +46,39 @@ function dd($data): void
     die();
 }
 
-function path($path): string
+
+/**
+ * Return the full path to a file
+ *
+ * @param string $path
+ * @return string
+ */
+function path(string $path) : string
+
 {
     if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
         $path = DIRECTORY_SEPARATOR . $path;
     }
 
+
+    return BASE_DIR . $path;
+}
+
+/**
+ * Return the full path to view folder
+ *
+ * @param string $path
+ * @return string
+ */
+function view_path(string $path) : string
+{
+    if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
+        $path = DIRECTORY_SEPARATOR . $path;
+    }
+    return BASE_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . $path;
+}
+
+=======
     return BASE_DIR . $path;
 }
 
@@ -81,3 +108,4 @@ function config($key, $default = null): array|string|bool
 
     return $config ?? $default;
 }
+
