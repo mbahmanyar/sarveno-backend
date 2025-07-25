@@ -40,5 +40,11 @@ class Database
         return $this->connection->lastInsertId();
     }
 
+    public function reset(): void
+    {
+        $this->connection->exec("TRUNCATE TABLE users");
+        // Add more tables to truncate if needed
+    }
+
 
 }
