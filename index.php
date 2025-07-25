@@ -5,6 +5,9 @@ use Core\Router;
 
 require 'vendor/autoload.php';
 
+const BASE_DIR = __DIR__;
+
+(\Dotenv\Dotenv::createImmutable(BASE_DIR))->load();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
