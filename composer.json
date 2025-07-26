@@ -28,6 +28,9 @@
     "scripts": {
         "test": [
             "pest --color=always"
+        ],
+        "serve" : [
+            "php -S localhost:8888 index.php"
         ]
     },
     "require-dev": {
