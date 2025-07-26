@@ -8,7 +8,8 @@ use Core\Interfaces\MiddlewareInterface;
 class Router
 {
     private array $routes;
-    private array $matchedRoute=[];
+    private array $matchedRoute = [];
+
 
 
     public function __construct(

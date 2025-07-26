@@ -1,0 +1,33 @@
+{
+  "name": "sarvcrm",
+  "version": "1.0.0",
+  "description": "A shopping list system developed as a Mini MVC.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbahmanyar/sarveno-backend.git"
+  },
+  "author": "Mohammad Bahmanyar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mbahmanyar/sarveno-backend/issues"
+  },
+  "homepage": "https://github.com/mbahmanyar/sarveno-backend#readme",
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "sass": "^1.89.2",
+    "sass-loader": "^16.0.5",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1"
+  }
+}
