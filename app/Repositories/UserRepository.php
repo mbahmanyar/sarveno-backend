@@ -63,7 +63,7 @@ class UserRepository implements UserRepositoryInterface
         return $user;
     }
 
-    public function findByEmail(string $email)
+    public function findByEmail(string $email): User|null
     {
         $result = $this->database->query("SELECT * FROM users WHERE email=:email", ["email" => $email])->fetch();
 

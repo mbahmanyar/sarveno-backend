@@ -40,5 +40,14 @@ class Database
         return $this->connection->lastInsertId();
     }
 
+    public function reset(): void
+    {
+        $databases = $this->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
+        $databases = array_column($databases, 'Tables_in_'. config('database.name'));
+        array_walk($databases, function ($value) {
+            $this->connection->exec("TRUNCATE TABLE {$value}");
+        });
+    }
+
 
 }

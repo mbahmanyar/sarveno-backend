@@ -16,6 +16,6 @@ interface UserRepositoryInterface
 
     public function update(User $user): User;
 
-    public function findByEmail(string $email);
+    public function findByEmail(string $email): User|null;
 
 }

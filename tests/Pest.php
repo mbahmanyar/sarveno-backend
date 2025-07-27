@@ -13,6 +13,7 @@
 
 pest()->extend(Tests\TestCase::class)->in('Feature');
 
+const BASE_DIR = __DIR__ . '/../';
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -24,8 +25,24 @@ pest()->extend(Tests\TestCase::class)->in('Feature');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
+expect()->extend('toBeSuccessFormat', function () {
+
+    return $this->toBeJson()
+        ->json()
+        ->toHaveKey('code')
+        ->toHaveKey('message')
+        ->toHaveKey('success')
+        ->toHaveKey('data')
+        ->data;
+});
+
+expect()->extend('toBeErrorFormat', function (int $code) {
+
+    return $this->toBeJson()
+        ->json()
+        ->toHaveKeys(['code', 'message', 'success'])
+        ->success->toBeFalse()
+        ->code->toBe($code);
 });
 
 /*
@@ -39,7 +56,41 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function factory()
 {
-    // ..
+    return \Faker\Factory::create();
+}
+
+function repository($repositoryClass)
+{
+    $database = new \Core\Database();
+    return new $repositoryClass($database);
+}
+
+/**
+ * remove all data from the database
+ *
+ * @return void
+ */
+function freshDatabase(): void
+{
+    // Reset the database or any necessary setup before each test
+    $database = new \Core\Database();
+    $database->reset();
+}
+
+/**
+ * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+ */
+function client($method = 'GET', $uri = '', $options = []): \Symfony\Contracts\HttpClient\ResponseInterface
+{
+    $client = \Symfony\Component\HttpClient\HttpClient::create([
+        "base_uri" => "http://localhost:8888",
+        "headers" => [
+            "Accept" => "application/json",
+            "Content-Type" => "application/json",
+        ],
+    ]);
+
+    return $client->request($method, $uri, $options);
 }
