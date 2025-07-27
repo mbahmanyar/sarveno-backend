@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Forms\CreateItemForm;
+use App\Forms\UpdateItemForm;
 use App\Models\ShoppingItem;
 use App\Repositories\ShoppingItemRepository;
 use Core\Interfaces\AuthenticationInterface;
@@ -41,20 +42,21 @@ class ShoppingItemsController
             $data = json_decode(file_get_contents('php://input'), true);
         }
 
-        $data = CreateItemForm::validate($data);
+        $data = CreateItemForm::validate([...$data, 'user_id' => $this->currentUser->id]);
 
         $model = ShoppingItem::initiate($data);
 
         $item = $this->shoppingItemRepository->save($model);
 
-        echo response($item, 201);
+        echo response($item,'The item was added.', 201);
     }
 
     public function update(int $id)
     {
         $data = json_decode(file_get_contents('php://input'), true);
 
-        $data = CreateItemForm::validate($data);
+        $data = UpdateItemForm::validate([...$data, 'user_id' => $this->currentUser->id]);
+
 
         $model = $this->shoppingItemRepository->findOrFail($id);
 
@@ -62,7 +64,7 @@ class ShoppingItemsController
 
         $item = $this->shoppingItemRepository->save($model);
 
-        echo response($item, 200);
+        echo response($item, 'The item was updated successfully.',200);
     }
 
 
@@ -74,12 +76,5 @@ class ShoppingItemsController
 
         response(data: $shoppingItem, code: 204);
     }
-
-    public function list()
-    {
-        require path(DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'shopping-items.php');
-
-    }
-
 
 }

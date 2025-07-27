@@ -24,9 +24,7 @@ try {
     $router = \Core\Application::container()->resolve(Router::class);
 
 
-    $router->get('/register', [\App\Controllers\Api\AuthController::class, 'create']);
-    $router->get('/login', [\App\Controllers\Api\AuthController::class, 'show']);
-    $router->get('/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index']);
+
 
 
     require path("/app/routes.php");

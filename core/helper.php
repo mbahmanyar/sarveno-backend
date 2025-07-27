@@ -87,9 +87,6 @@ function view_path(string $path) : string
     return BASE_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . $path;
 }
 
-=======
-    return BASE_DIR . $path;
-}
 
 /**
  * Retrieve configuration value from config file
