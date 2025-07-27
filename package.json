@@ -9,7 +9,7 @@
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "webpack --watch"
+    "dev": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,8 @@
     "typescript": "^5.8.3",
     "webpack": "^5.100.2",
     "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "axios": "^1.11.0"
   }
 }
