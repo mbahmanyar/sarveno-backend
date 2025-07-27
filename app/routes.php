@@ -22,3 +22,6 @@ $router->post('/api/shopping-items', [\App\Controllers\Api\ShoppingItemsControll
 $router->put('/api/shopping-items/{id}', [\App\Controllers\Api\ShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class, \App\Middlewares\Authorization::class]);
 $router->delete('/api/shopping-items/{id}', [\App\Controllers\Api\ShoppingItemsController::class, 'delete'], [\App\Middlewares\Authentication::class, \App\Middlewares\Authorization::class]);
 $router->patch('/api/shopping-items/{id}/toggle-check', [\App\Controllers\Api\ToggleCheckShoppingItemsController::class, 'update'], [\App\Middlewares\Authentication::class, \App\Middlewares\Authorization::class]);
+
+$router->post('/api/register', [\App\Controllers\Api\AuthController::class, 'store']);
+$router->post('/api/login', [\App\Controllers\Api\AuthController::class, 'index']);
