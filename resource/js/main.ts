@@ -50,6 +50,26 @@ if (shoppingItemWrapper) {
     shoppingItemHandler.init();
 }
 
+async function redirect(to: string) {
+    new Promise(() => {
+        window.location.href = to;
+    })
+}
+
+async function logout() {
+    localStorage.removeItem('token');
+    await redirect('/login');
+}
+
+const logoutBtn = document.querySelector("#logout") as HTMLElement;
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', function (e:Event) {
+        e.preventDefault();
+        logout();
+    })
+}
+
+
 
 
 

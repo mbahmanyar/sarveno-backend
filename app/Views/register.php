@@ -21,6 +21,7 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
+        <a class="sub-link" href="/login">Have you registered? Let's log in.</a>
 
     </div>
 

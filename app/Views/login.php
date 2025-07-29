@@ -21,7 +21,7 @@
             </div>
             <button type="submit" class="btn btn-primary w-100">Log in</button>
         </form>
-
+        <a class="sub-link" href="/register">Do not have an account? Let's dive in!</a>
     </div>
 
 </div>

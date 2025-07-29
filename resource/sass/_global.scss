@@ -54,6 +54,17 @@ body {
   display: none !important;
 }
 
+.text-primary {
+  color: var(--primary-color);
+}
+
+.sub-link {
+  color: var(--primary-color);
+  font-size: 0.9em;
+  text-decoration: none;
+}
+
+
 /* Container styles */
 
 .container {
