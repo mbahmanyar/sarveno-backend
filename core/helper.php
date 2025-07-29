@@ -67,8 +67,6 @@ function path(string $path) : string
     if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
         $path = DIRECTORY_SEPARATOR . $path;
     }
-    return BASE_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . $path;
-}
 
     return BASE_DIR . $path;
 }
