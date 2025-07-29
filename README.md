@@ -10,6 +10,9 @@ A simple yet robust **Shopping List web application** built in **vanilla PHP (no
 - OOP principles used throughout
 - Simple and secure DB access with PDO
 - Input validation
+- Apply feature tests (Pest)
+- Simple user authentication (register/login)
+- Simple UI
 
 ---
 
@@ -21,7 +24,7 @@ A simple yet robust **Shopping List web application** built in **vanilla PHP (no
 
 ---
 
-## ⚙️ Setup & Run
+##  Setup & Run
 
 1. **Clone the repository:**
 
@@ -50,10 +53,17 @@ php -S localhost:8888 index.php
    Open [http://localhost:8888](http://localhost:8888)
 
 
+#### Usage: also you can use Postman or any REST client to test the API endpoints.
+
 ---
 
-##️ Sample REST API Endpoints
+## Sample REST API Endpoints
+web
+- `GET    /register`                   Show registration form
+- `GET   /login`                   Show login form
+- `GET    /shopping-items`              Show the list of items and form to add new item
 
+api
 - `GET    /api/shopping-items`                   List all items
 - `POST   /api/shopping-items`                   Create new item
 - `PUT    /api/shopping-items/{id}`              Update item (edit name)
