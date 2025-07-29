@@ -35,7 +35,7 @@ export default class FormHandler {
     }
 
     private attachSubmit() {
-        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        this.form.addEventListener('submit', this.handleSubmit.bind(this), true);
     }
 
     private attachBlurValidation() {
@@ -98,7 +98,15 @@ export default class FormHandler {
 
 
         const action = this.form.action;
-        const method = this.form.method.toUpperCase() as HttpMethod;
+        let method = this.form.method.toUpperCase() as HttpMethod;
+
+        // If the form has a _method field, we use that to determine the method
+        if (data.hasOwnProperty('_method')) {
+            //
+            method = data['_method'];
+            // This is useful for RESTful APIs that use PUT or DELETE methods
+            data["_method"] = undefined; // remove it from the data to avoid sending it
+        }
 
         const [success, error] = await http<any>(action, method, data)
 

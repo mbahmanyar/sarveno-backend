@@ -1,5 +1,7 @@
 import {IShoppingItem, ShoppingItemRepository} from "./repositories/ShoppingItemRepository";
 import {alertModal} from "./modal";
+import FormHandler from "./FormHandler";
+import {required} from "./Validators";
 
 export default class ShoppingItemHandler {
 
@@ -46,24 +48,10 @@ export default class ShoppingItemHandler {
 
         await this.getList();
 
+        await this.addItemFormAttach();
 
-        const addItemForm = document.querySelector('#add-item-form') as HTMLFormElement;
 
-        // if (addItemForm) {
-        //     new FormHandler(addItemForm, {
-        //         fieldValidators: {
-        //             name: [required],
-        //             note: []
-        //         },
-        //         handleResponse: async (response) => {
-        //             const item = response.data;
-        //             shoppingItemWrapper.innerHTML += shoppingItemTemplate(item);
-        //             await alertModal({
-        //                 title: response.message
-        //             });
-        //         }
-        //     });
-        // }
+
     }
 
     async getList() {
@@ -95,6 +83,9 @@ export default class ShoppingItemHandler {
             items.forEach(item => {
                 this.shoppingItemWrapper.innerHTML += this.shoppingItemTemplate(item);
             });
+
+            // capture the submit event when the form is rerendered
+            this.editItemAttach();
             return;
         }
         this.shoppingItemWrapper.innerHTML = '<p>No items found.</p>';
@@ -133,12 +124,13 @@ export default class ShoppingItemHandler {
                 <form style="" class="edit-form" method="POST" action="/api/shopping-items/${item.id ?? ""}">
                     <div class="form-group">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" value="${item.name ?? ""}" required>
                     </div>
                     <div class="form-group">
-                        <label for="note" class="form-label">Email address</label>
-                        <textarea class="form-control" id="note" name="note"></textarea>
+                        <label for="note" class="form-label">Note address</label>
+                        <textarea class="form-control" id="note" name="note">${item.note ?? ""}</textarea>
                     </div>
+                    <input type="hidden" name="_method" value="PUT">
                     <button type="submit" class="btn btn-primary w-100">Edit the list</button>
                 </form>
             </div>
@@ -151,4 +143,51 @@ export default class ShoppingItemHandler {
     }
 
 
+    private async addItemFormAttach() {
+        const addItemForm = document.querySelector('#add-item-form') as HTMLFormElement;
+
+        if (addItemForm) {
+            new FormHandler(addItemForm, {
+                fieldValidators: {
+                    name: [required],
+                    note: []
+                },
+                handleResponse: async (response) => {
+                    console.log('response', response)
+                    this.items = [...this.items, response.data];
+                    this.loadItems(this.items);
+
+                    await alertModal({
+                        title: response.message
+                    });
+                }
+            });
+        }
+    }
+
+    private async editItemAttach() {
+        const editItemForms = document.querySelectorAll('.edit-form') as NodeListOf<HTMLFormElement>;
+
+        editItemForms.forEach((form) => {
+
+            if (form) {
+                new FormHandler(form, {
+                    fieldValidators: {
+                        name: [required],
+                        note: []
+                    },
+                    handleResponse: async (response) => {
+                        console.log('response', response)
+                        this.items = [...this.items, response.data];
+                        this.loadItems(this.items);
+
+                        await alertModal({
+                            title: response.message
+                        });
+                    }
+                });
+            }
+
+        });
+    }
 }
