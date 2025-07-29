@@ -45,19 +45,19 @@ customHttp.interceptors.response.use(function (response): AxiosResponse<IRespons
 export default async function http<T>(url: string, method: HttpMethod = 'GET', data = {}): Promise<[IResponse<T> | null, IError | null]> {
     try {
         if (method === 'POST') {
-            const response = await customHttp.post<IResponse<T>>(url, {data});
+            const response = await customHttp.post<IResponse<T>>(url, data);
             return [response.data, null];
         }
         if (method === 'PUT') {
-            const response = await customHttp.put<IResponse<T>>(url, {data});
+            const response = await customHttp.put<IResponse<T>>(url, data);
             return [response.data, null];
         }
         if (method === 'PATCH') {
-            const response = await customHttp.patch<IResponse<T>>(url, {data});
+            const response = await customHttp.patch<IResponse<T>>(url, data);
             return [response.data, null];
         }
         if (method === 'DELETE') {
-            const response = await customHttp.delete<IResponse<T>>(url, {data});
+            const response = await customHttp.delete<IResponse<T>>(url, data);
             return [response.data, null];
         }
         const response = await customHttp.get<IResponse<T>>(url, {params: data});
