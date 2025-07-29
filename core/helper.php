@@ -139,3 +139,23 @@ function responseIsJson(): bool
     return !empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
 }
 
+
+function handleException(Throwable $e)
+{
+
+    if ($e instanceof \App\Exception\NotFoundException) {
+        abort($e->getMessage(), 404);
+    }
+    if ($e instanceof \App\Exception\ValidationException) {
+        abort($e->getMessage(), 422, $e->errors);
+    }
+    if ($e instanceof \App\Exception\UnauthenticatedException) {
+        abort($e->getMessage(), $e->getCode());
+    }
+    if ($e instanceof \App\Exception\UnAuthorizedException) {
+        abort($e->getMessage(), 403);
+    }
+    // Optionally log the $e somewhere here (file, Sentry, etc)
+    abort("Internal Server Error", 500);
+}
+
