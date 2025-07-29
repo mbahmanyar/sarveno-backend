@@ -1,7 +1,8 @@
 ### GET request to example server
-POST http://localhost:8888/api/shopping-items
+POST {{url}}/api/shopping-items
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{ auth_token}}
 
 {
   "name": "New Item",
@@ -10,9 +11,10 @@ Content-Type: application/json
 }
 
 ### GET request to example server
-POST http://localhost:8888/api/shopping-items
+POST {{url}}/api/shopping-items
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{ auth_token}}
 
 {
   "name": "",

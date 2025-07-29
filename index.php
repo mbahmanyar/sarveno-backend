@@ -5,6 +5,7 @@ use Core\Router;
 
 require 'vendor/autoload.php';
 
+
 const BASE_DIR = __DIR__;
 
 (\Dotenv\Dotenv::createImmutable(BASE_DIR))->load();
@@ -21,6 +22,10 @@ require_once path("/app/providers.php");
 
 try {
     $router = \Core\Application::container()->resolve(Router::class);
+
+
+
+
 
     require path("/app/routes.php");
 

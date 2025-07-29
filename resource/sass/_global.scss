@@ -1,0 +1,110 @@
+
+/* variables */
+
+:root {
+  --primary-color: #007bff;
+  --primary-color-darken: #0056b3;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --success-color-darken: #218838;
+  --danger-color: #dc3545;
+  --danger-color-darken: #c82333;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+
+  --text-color: #333;
+  --link-color: #ffffff;
+
+  --background-base: #f0f0f0;
+  --item-background: #ffffff;
+  --item-background-darken: #e9ecef;
+
+  --font-family: Arial, sans-serif;
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+
+}
+
+/* style reset*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-family);
+}
+
+/* Global styles */
+body {
+  background-color: var(--background-base);
+  color: var(--text-color);
+  line-height: var(--line-height-base);
+}
+
+.show {
+  display: block !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.sub-link {
+  color: var(--primary-color);
+  font-size: 0.9em;
+  text-decoration: none;
+}
+
+
+/* Container styles */
+
+.container {
+  width: 100%;
+  max-width: 1288px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/** Button styles */
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: var(--primary-color-darken);
+  }
+
+  &[type="submit"] {
+    background-color: var(--success-color);
+
+    &:hover {
+      background-color: var(--success-color-darken);
+    }
+  }
+
+}
+
+/** card */
+.card {
+  background-color: var(--item-background);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}

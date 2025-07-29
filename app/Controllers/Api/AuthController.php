@@ -56,17 +56,4 @@ class AuthController
 
         echo response($item, 201);
     }
-
-
-    public function create()
-    {
-        require path(DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'register.php');
-    }
-
-
-    public function show()
-    {
-        require path(DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . 'login.php');
-    }
-
 }
