@@ -6,6 +6,10 @@
 /**
  * web
  */
+
+$router->get('/', function () {
+    redirect('/login');
+});
 $router->get('/register', [\App\Controllers\RegisteredUserController::class, 'create']);
 $router->get('/login', [\App\Controllers\RegisteredUserController::class, 'show']);
 $router->get('/shopping-items', [\App\Controllers\ShoppingItemsController::class, 'index']);
