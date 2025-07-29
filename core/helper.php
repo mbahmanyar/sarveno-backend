@@ -128,7 +128,7 @@ function config($key, $default = null): array|string|bool
  * @return void
  */
 #[NoReturn]
-function redirect(string $url, ?int $code = null): void
+function redirect(string $url, ?int $code = 0): void
 {
     header('location:' . $url, false, $code);
     exit();
