@@ -153,10 +153,9 @@ export default class ShoppingItemHandler {
                     note: []
                 },
                 handleResponse: async (response) => {
-                    console.log('response', response)
                     this.items = [...this.items, response.data];
                     this.loadItems(this.items);
-
+                    addItemForm.reset();
                     await alertModal({
                         title: response.message
                     });

@@ -11,7 +11,6 @@ class Router
     private array $matchedRoute = [];
 
 
-
     public function __construct(
         private readonly string $requestUri,
         private readonly string $requestMethod
@@ -19,7 +18,7 @@ class Router
     {
     }
 
-    public function getMatchedRouteParams() : array
+    public function getMatchedRouteParams(): array
     {
         return $this->matchedRoute['params'] ?? [];
     }
@@ -31,40 +30,41 @@ class Router
      * @param Array<MiddlewareInterface> $middlewares
      * @return void
      */
-    private function addRoute(string $uri, array $controller, string $method, array $middlewares = [])
+    private function addRoute(string $uri, array|callable $controller, ?string $method = null, array $middlewares = [])
     {
         $uri = $this->compileUri($uri);
+
 
         $this->routes[] = [
             "pattern" => $uri,
             "method" => $method,
-            "controller" => $controller[0],
-            "action" => $controller[1],
+            "controller" => (is_array($controller)) ? $controller[0] : $controller,
+            "action" => is_array($controller) ? $controller[1] : null,
             "middlewares" => $middlewares
         ];
     }
 
-    public function get(string $uri, array $controller, ?array $middlewares = [])
+    public function get(string $uri, array|callable $controller, ?array $middlewares = [])
     {
         $this->addRoute($uri, $controller, "GET", $middlewares);
     }
 
-    public function post(string $uri, array $controller, ?array $middlewares = [])
+    public function post(string $uri, array|callable $controller, ?array $middlewares = [])
     {
         $this->addRoute($uri, $controller, "POST", $middlewares);
     }
 
-    public function delete(string $uri, array $controller, ?array $middlewares = [])
+    public function delete(string $uri, array|callable $controller, ?array $middlewares = [])
     {
         $this->addRoute($uri, $controller, "DELETE", $middlewares);
     }
 
-    public function patch(string $uri, array $controller, ?array $middlewares = [])
+    public function patch(string $uri, array|callable $controller, ?array $middlewares = [])
     {
         $this->addRoute($uri, $controller, "PATCH", $middlewares);
     }
 
-    public function put(string $uri, array $controller, ?array $middlewares = [])
+    public function put(string $uri, array|callable $controller, ?array $middlewares = [])
     {
         $this->addRoute($uri, $controller, "PUT", $middlewares);
     }
@@ -104,8 +104,12 @@ class Router
             }
         }
 
-        $controller = Application::container()->resolve($this->matchedRoute['controller']);
+        if(is_callable($this->matchedRoute['controller'])) {
+            $controller = $this->matchedRoute['controller'];
+            return call_user_func_array($controller, $this->matchedRoute['params']);
+        }
 
+        $controller = Application::container()->resolve($this->matchedRoute['controller']);
 
         return call_user_func_array([$controller, $this->matchedRoute['action']], $this->matchedRoute['params']);
     }

@@ -7,8 +7,8 @@
     <div class="container">
         <a class="navbar-brand" href="/">Shopping List</a>
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-            <li class="nav-item"><a class="nav-link active" href="/register">Register</a></li>
+<!--            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>-->
+<!--            <li class="nav-item"><a class="nav-link active" href="/register">Register</a></li>-->
             <li class="nav-item">
 
                 <a href="" class="nav-item" id="logout">logout

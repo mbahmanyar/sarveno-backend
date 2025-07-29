@@ -31,7 +31,7 @@ class AuthController
 
         $token = $this->token->generate($input['email']);
 
-        echo response(['token' => $token], 200);
+        echo response(['token' => $token], 'User logged in successfully', 200);
 
     }
 
@@ -54,6 +54,17 @@ class AuthController
 
         $item = $this->userRepository->save($user);
 
-        echo response($item, 201);
+        $token = $this->token->generate($user->email);
+
+//        todo Dtos
+
+
+
+        echo response(
+            [
+                "email" => $item->email,
+                "token" => $token,
+            ]
+            , 'User created successfully', 201);
     }
 }
