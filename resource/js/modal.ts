@@ -33,15 +33,15 @@ export function modalContent(modalOptions: IModalOptions) {
     return content;
 }
 
-export async function alertModal(options: IModalOptions) {
+export async function alertModal(options: IModalOptions, timeout: number = 3000) {
     const content = modalContent(options);
     const modal = document.querySelector('#modal') as HTMLDivElement;
-    console.log('o',options)
+    console.log('o', options)
     modal.querySelector('.modal-content')!.innerHTML = content;
 
     showModal();
 
-    await debounce(3000);
+    await debounce(timeout);
 
     hideModal();
 
