@@ -12,6 +12,17 @@ if (registerForm) {
         fieldValidators: {
             email: [required, email],
             password: [required]
+        },
+        handleResponse: async (response) => {
+            const {token} = response.data;
+            // console.log(response.data)
+            await alertModal({
+                title: response.message
+            });
+            if (token) {
+                localStorage.setItem('token', token);
+                window.location.href = '/shopping-items';
+            }
         }
     });
 }
