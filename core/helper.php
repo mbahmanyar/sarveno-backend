@@ -1,4 +1,7 @@
 <?php
+
+use JetBrains\PhpStorm\NoReturn;
+
 /**
  * Function to return container
  *
@@ -62,7 +65,7 @@ function dd($data): void
  * @param string $path
  * @return string
  */
-function path(string $path) : string
+function path(string $path): string
 {
     if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
         $path = DIRECTORY_SEPARATOR . $path;
@@ -77,7 +80,7 @@ function path(string $path) : string
  * @param string $path
  * @return string
  */
-function view_path(string $path) : string
+function view_path(string $path): string
 {
     if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
         $path = DIRECTORY_SEPARATOR . $path;
@@ -111,5 +114,18 @@ function config($key, $default = null): array|string|bool
     }, $config);
 
     return $config ?? $default;
+}
+
+/**
+ * redirect to
+ *
+ * @param string $url
+ * @return void
+ */
+#[NoReturn]
+function redirect(string $url): void
+{
+    header('location:' . $url);
+    exit();
 }
 
