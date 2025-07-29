@@ -29,25 +29,30 @@ function response(object|array $data, ?string $message = null, int $code = 200):
 }
 
 
-function abort(string $message, int $code = 400, ?array $errors = null): string
+#[NoReturn]
+function abort(string $message, int $code = 400, ?array $errors = null): void
 {
-    http_response_code($code);
-    header('Content-Type: application/json; charset=utf-8');
+    if (responseIsJson()) {
+        http_response_code($code);
+        header('Content-Type: application/json; charset=utf-8');
+        $array = [
+            "code" => $code,
+            'message' => $message,
+            "success" => false
+        ];
 
-    $array = [
-        "code" => $code,
-        'message' => $message,
-        "success" => false
-    ];
+        if ($errors) {
+            $array = [...$array, 'errors' => $errors];
+        }
+        echo json_encode(
+            $array
+        );
 
-    if ($errors) {
-        $array = [...$array, 'errors' => $errors];
+    } else {
+        http_response_code($code);
+        require view_path('error.php');
     }
-
-    return json_encode(
-        $array
-    );
-
+    exit();
 }
 
 function dd($data): void
@@ -123,9 +128,14 @@ function config($key, $default = null): array|string|bool
  * @return void
  */
 #[NoReturn]
-function redirect(string $url): void
+function redirect(string $url, ?int $code = null): void
 {
-    header('location:' . $url);
+    header('location:' . $url, false, $code);
     exit();
+}
+
+function responseIsJson(): bool
+{
+    return !empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
 }
 
