@@ -2,6 +2,7 @@
 <?php require_once path('/app/Views/Shares/open_body.php') ?>
 
 
+
 <div id="login" class="container">
 
 
@@ -9,6 +10,7 @@
 
         <h1 class="title">Sign in</h1>
         <p class="sub-title">Log in to your account</p>
+
 
         <form id="login-form" method="POST" action="/api/login">
             <div class="form-group">
@@ -27,3 +29,4 @@
 </div>
 
 <?php require_once path('/app/Views/Shares/close_body.php') ?>
+

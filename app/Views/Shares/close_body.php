@@ -1,3 +1,4 @@
+
 <div class="modal-wrapper hidden" id="modal">
 
     <div class="modal-content">

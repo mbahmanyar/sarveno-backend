@@ -2,6 +2,7 @@
 <?php require_once path('/app/Views/Shares/open_body.php') ?>
 
 
+
 <div id="register" class="container">
 
 

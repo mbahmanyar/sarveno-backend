@@ -10,6 +10,7 @@
             <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
             <li class="nav-item"><a class="nav-link active" href="/register">Register</a></li>
             <li class="nav-item">
+
                 <a href="" class="nav-item" id="logout">logout
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -29,6 +30,7 @@
 
     <div class="card" style="margin-bottom: 20px">
 
+
         <form id="add-item-form" method="POST" action="/api/shopping-items">
             <div class="form-group">
                 <label for="name" class="form-label">Name</label>
@@ -43,6 +45,7 @@
         </form>
 
     </div>
+
 
     <div id="shopping-item-wrapper">
         <div class="card">
