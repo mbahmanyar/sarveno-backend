@@ -207,4 +207,4 @@ test('user can not see shopping item of other user', function () {
     expect($response->getContent(false))
         ->toBeErrorFormat(403);
 
-})->only();
+});

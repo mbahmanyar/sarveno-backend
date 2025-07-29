@@ -1,4 +1,7 @@
 <?php
+
+use JetBrains\PhpStorm\NoReturn;
+
 /**
  * Function to return container
  *
@@ -26,25 +29,30 @@ function response(object|array $data, ?string $message = null, int $code = 200):
 }
 
 
-function abort(string $message, int $code = 400, ?array $errors = null): string
+#[NoReturn]
+function abort(string $message, int $code = 400, ?array $errors = null): void
 {
-    http_response_code($code);
-    header('Content-Type: application/json; charset=utf-8');
+    if (responseIsJson()) {
+        http_response_code($code);
+        header('Content-Type: application/json; charset=utf-8');
+        $array = [
+            "code" => $code,
+            'message' => $message,
+            "success" => false
+        ];
 
-    $array = [
-        "code" => $code,
-        'message' => $message,
-        "success" => false
-    ];
+        if ($errors) {
+            $array = [...$array, 'errors' => $errors];
+        }
+        echo json_encode(
+            $array
+        );
 
-    if ($errors) {
-        $array = [...$array, 'errors' => $errors];
+    } else {
+        http_response_code($code);
+        require view_path('error.php');
     }
-
-    return json_encode(
-        $array
-    );
-
+    exit();
 }
 
 function dd($data): void
@@ -62,13 +70,11 @@ function dd($data): void
  * @param string $path
  * @return string
  */
-function path(string $path) : string
+function path(string $path): string
 {
     if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
         $path = DIRECTORY_SEPARATOR . $path;
     }
-    return BASE_DIR . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . $path;
-}
 
     return BASE_DIR . $path;
 }
@@ -79,7 +85,7 @@ function path(string $path) : string
  * @param string $path
  * @return string
  */
-function view_path(string $path) : string
+function view_path(string $path): string
 {
     if (!str_starts_with($path, DIRECTORY_SEPARATOR)) {
         $path = DIRECTORY_SEPARATOR . $path;
@@ -113,5 +119,43 @@ function config($key, $default = null): array|string|bool
     }, $config);
 
     return $config ?? $default;
+}
+
+/**
+ * redirect to
+ *
+ * @param string $url
+ * @return void
+ */
+#[NoReturn]
+function redirect(string $url, ?int $code = 0): void
+{
+    header('location:' . $url, false, $code);
+    exit();
+}
+
+function responseIsJson(): bool
+{
+    return !empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false;
+}
+
+
+function handleException(Throwable $e)
+{
+
+    if ($e instanceof \App\Exception\NotFoundException) {
+        abort($e->getMessage(), 404);
+    }
+    if ($e instanceof \App\Exception\ValidationException) {
+        abort($e->getMessage(), 422, $e->errors);
+    }
+    if ($e instanceof \App\Exception\UnauthenticatedException) {
+        abort($e->getMessage(), $e->getCode());
+    }
+    if ($e instanceof \App\Exception\UnAuthorizedException) {
+        abort($e->getMessage(), 403);
+    }
+    // Optionally log the $e somewhere here (file, Sentry, etc)
+    abort("Internal Server Error", 500);
 }
 
