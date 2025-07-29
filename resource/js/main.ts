@@ -2,12 +2,16 @@ import FormHandler from "./FormHandler";
 import {email, required} from "./Validators";
 import {alertModal} from "./modal";
 import ShoppingItemHandler from "./ShoppingItemHandler";
+import {isLoggedIn, logout, redirect} from "./helper";
 
 
+// check if user in register page
 const registerForm = document.querySelector("#register-form") as HTMLFormElement;
-
-
 if (registerForm) {
+    if (isLoggedIn()) {
+        window.location.href="/shopping-items";
+    }
+
     new FormHandler(registerForm, {
         fieldValidators: {
             email: [required, email],
@@ -27,9 +31,16 @@ if (registerForm) {
     });
 }
 
+
+// check if user in login page
 const loginForm = document.querySelector("#login-form") as HTMLFormElement;
 
 if (loginForm) {
+
+    if (isLoggedIn()) {
+        window.location.href="/shopping-items";
+    }
+
     new FormHandler(
         loginForm,
         {
@@ -53,7 +64,7 @@ if (loginForm) {
     )
 }
 
-
+// check if user in shopping items page
 const shoppingItemWrapper = document.querySelector('#shopping-item-wrapper') as HTMLDivElement;
 if (shoppingItemWrapper) {
     const shoppingItemHandler = new ShoppingItemHandler(shoppingItemWrapper);
@@ -61,26 +72,14 @@ if (shoppingItemWrapper) {
     shoppingItemHandler.init();
 }
 
-async function redirect(to: string) {
-    new Promise(() => {
-        window.location.href = to;
-    })
-}
-
-async function logout() {
-    localStorage.removeItem('token');
-    await redirect('/login');
-}
 
 const logoutBtn = document.querySelector("#logout") as HTMLElement;
 if (logoutBtn) {
-    logoutBtn.addEventListener('click', function (e:Event) {
+    logoutBtn.addEventListener('click', function (e: Event) {
         e.preventDefault();
         logout();
     })
 }
-
-
 
 
 
