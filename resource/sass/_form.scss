@@ -28,9 +28,8 @@ form {
   gap: 15px;
 
   .form-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 130px 1fr;
 
   }
 
@@ -58,4 +57,12 @@ form {
     }
 
   }
+}
+
+
+.field-error {
+  color: var(--danger-color);
+  font-size: 0.9em;
+  display: inline-block;
+  grid-column: 2/end;
 }

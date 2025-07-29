@@ -10,7 +10,7 @@
         <h1 class="title">Sign in</h1>
         <p class="sub-title">Log in to your account</p>
 
-        <form id="register-form" method="POST" action="/api/login">
+        <form id="login-form" method="POST" action="/api/login">
             <div class="form-group">
                 <label for="email" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="email" name="email">
