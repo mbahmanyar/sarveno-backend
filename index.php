@@ -3,6 +3,13 @@
 // load autoloader
 use Core\Router;
 
+/** refuse non-php requests  */
+if (preg_match('/\.(?:png|jpg|jpeg|gif|css|js)$/', $_SERVER["REQUEST_URI"])) {
+    return false; // serve the requested resource as-is
+}
+
+
+
 require 'vendor/autoload.php';
 
 const BASE_DIR = __DIR__;
