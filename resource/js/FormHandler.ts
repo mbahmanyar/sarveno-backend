@@ -1,4 +1,5 @@
 import http, {HttpMethod, IResponse} from "./http";
+import {alertModal} from "./modal";
 
 export type ValidatorFn = (input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement, form?: HTMLFormElement) => string | null;
 type FormValidatorFn = (form: HTMLFormElement) => string[];
@@ -115,7 +116,6 @@ export default class FormHandler {
                 this.handleResponse(success);
             }
         }
-
         if (error) {
             if (error!.code === 422 && error?.errors) {
                 Object.entries(error.errors).forEach(([key, msg]) => {
@@ -126,6 +126,8 @@ export default class FormHandler {
                 });
                 return;
             }
+            await alertModal({title: error.message || 'Validation Error'});
+
         }
         // console.log(error)
 

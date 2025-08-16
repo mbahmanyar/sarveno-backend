@@ -68,7 +68,18 @@ export default async function http<T>(url: string, method: HttpMethod = 'GET', d
         if (axios.isAxiosError(error)) {
             return [null, error.response?.data as IError || {message: 'Unknown error', success: false}];
         }
-        return [null, {message: error?.message ?? 'Unknown error', success: false}];
+
+        const errorObject:IError = {
+            message: error?.message ?? 'Unknown error',
+            code: error?.code ?? 400,
+            success: false
+        };
+
+        if (error.errors) {
+            errorObject.errors = error.errors;
+        }
+
+        return [null, errorObject];
     }
 
 }
