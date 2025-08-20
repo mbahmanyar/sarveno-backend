@@ -67,12 +67,13 @@ class ShoppingItemRepository implements ShoppingItemRepositoryInterface
 
     public function create(ShoppingItem $shoppingItem): ShoppingItem
     {
-        $this->db->query("INSERT INTO shopping_items (user_id,name, note, quantity, is_checked) VALUES (:user_id,:name, :note, :quantity, :is_checked)", [
+        $this->db->query("INSERT INTO shopping_items (user_id,name, note, quantity, is_checked, file) VALUES (:user_id,:name, :note, :quantity, :is_checked, :file)", [
             'user_id' => $shoppingItem->user_id,
             'name' => $shoppingItem->name,
             'note' => $shoppingItem->note,
             'quantity' => $shoppingItem->quantity,
             'is_checked' => (int) $shoppingItem->is_checked,
+            'file'=> $shoppingItem->file
         ]);
 
         $shoppingItem->id = $this->db->lastInsertId();

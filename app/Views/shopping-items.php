@@ -31,7 +31,7 @@
     <div class="card" style="margin-bottom: 20px">
 
 
-        <form id="add-item-form" method="POST" action="/api/shopping-items">
+        <form id="add-item-form" method="POST" action="/api/shopping-items" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
@@ -51,7 +51,7 @@
     </div>
 
 
-    <div id="shopping-item-wrapperd">
+    <div id="shopping-item-wrapper">
         <div class="card">
 
             <div class="shopping-list">

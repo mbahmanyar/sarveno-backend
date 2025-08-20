@@ -92,24 +92,26 @@ export default class FormHandler {
         }
 
 
-        const data: Record<string, any> = {};
-        new FormData(this.form).forEach((value, key) => {
-            data[key] = value;
-        });
+        const formData = new FormData(this.form);
+
 
 
         const action = this.form.action;
         let method = this.form.method.toUpperCase() as HttpMethod;
 
         // If the form has a _method field, we use that to determine the method
-        if (data.hasOwnProperty('_method')) {
+        if (formData.has('_method')) {
             //
-            method = data['_method'];
+            method = formData.get('_method')!.toString().toUpperCase() as HttpMethod;
             // This is useful for RESTful APIs that use PUT or DELETE methods
-            data["_method"] = undefined; // remove it from the data to avoid sending it
+            formData.delete("_method"); // remove it from the data to avoid sending it
         }
 
-        const [success, error] = await http<any>(action, method, data)
+        const [success, error] = await http<any>(action, method, formData, {
+            headers : {
+                "Content-Type": this.form.getAttribute('enctype') || 'application/json'
+            }
+        })
 
         if (success) {
             if (this.handleResponse) {

@@ -3,5 +3,6 @@
 /https/http-client.env.json
 /node_modules/
 .env
+/public/storage
 
 

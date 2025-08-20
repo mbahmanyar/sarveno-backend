@@ -53,21 +53,19 @@ class ShoppingItemsController
             $data = json_decode(file_get_contents('php://input'), true);
         }
 
-
         $data = CreateItemForm::validate([...$data, 'user_id' => $this->currentUser->id]);
 
 
-        $uploadDir = path('/public/storage/');
+        $uploadDir = '/public/storage';
         $extension = pathinfo($data['file']['name'], PATHINFO_EXTENSION);
-        $fileName = uniqid(more_entropy: true) . '.' . $extension;
-        $filePath = "{$uploadDir}.{$fileName}";
+        $fileName = uniqid(more_entropy: false) . '.' . $extension;
+        $filePath = "{$uploadDir}/{$fileName}";
 
-        if (!move_uploaded_file($data['file']['tmp_name'], $filePath)) {
+        if (!move_uploaded_file($data['file']['tmp_name'], path($filePath))) {
             abort('File upload failed.');
         }
 
         $data['file'] = $filePath;
-
 
         $model = ShoppingItem::initiate($data);
 
@@ -102,7 +100,7 @@ class ShoppingItemsController
     {
         $shoppingItem = $this->shoppingItemRepository->findOrFail($id);
 
-        if($shoppingItem->deleteFile()) {
+        if($shoppingItem->file && !$shoppingItem->deleteFile()) {
             abort("The file cannot be deleted.");
         }
 

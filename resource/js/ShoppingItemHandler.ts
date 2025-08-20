@@ -111,7 +111,7 @@ export default class ShoppingItemHandler {
                 <div class="list-actions">
                                         
                     <div>
-                        <img src="/public/storage/200.png" alt="placeholder image">
+                        <img style="width: 50px; height: 50px; object-fit: cover" src="${item.file ?? '/public/storage/200.png'}" alt="placeholder image">
 
                     </div>
                     

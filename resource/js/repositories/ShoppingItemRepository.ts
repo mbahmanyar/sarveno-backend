@@ -6,6 +6,7 @@ export interface IShoppingItem {
     name: string;
     note: string;
     quantity: number;
+    file:string;
     is_checked?: boolean;
     created_at?: string | null;
     updated_at?: string | null;

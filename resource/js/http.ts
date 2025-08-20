@@ -1,4 +1,4 @@
-import axios, {AxiosResponse, RawAxiosRequestHeaders} from "axios";
+import axios, {AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders} from "axios";
 
 
 let headers: RawAxiosRequestHeaders = {
@@ -42,10 +42,10 @@ customHttp.interceptors.response.use(function (response): AxiosResponse<IRespons
     return Promise.reject(error.response.data as IError);
 });
 
-export default async function http<T>(url: string, method: HttpMethod = 'GET', data = {}): Promise<[IResponse<T> | null, IError | null]> {
+export default async function http<T>(url: string, method: HttpMethod = 'GET', data = {}, config?:AxiosRequestConfig<any>): Promise<[IResponse<T> | null, IError | null]> {
     try {
         if (method === 'POST') {
-            const response = await customHttp.post<IResponse<T>>(url, data);
+            const response = await customHttp.post<IResponse<T>>(url, data, config);
             return [response.data, null];
         }
         if (method === 'PUT') {
