@@ -97,6 +97,19 @@
     gap: 10px;
     justify-self: end;
 
+    .list-image {
+      width: 50px;
+      overflow: hidden;
+      border-radius: 50%;
+
+      img {
+        object-fit: contain;
+        width: 100%;
+        height: auto;
+        display: inline-block;
+      }
+    }
+
     button {
       background-color: transparent;
       border: none;

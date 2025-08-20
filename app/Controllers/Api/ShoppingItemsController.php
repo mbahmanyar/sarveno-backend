@@ -3,9 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Forms\CreateItemForm;
-
 use App\Forms\UpdateItemForm;
-
 use App\Models\ShoppingItem;
 use App\Repositories\ShoppingItemRepository;
 use Core\Interfaces\AuthenticationInterface;
@@ -14,7 +12,7 @@ class ShoppingItemsController
 {
 
     public function __construct(
-        private ShoppingItemRepository $shoppingItemRepository,
+        private ShoppingItemRepository  $shoppingItemRepository,
         private AuthenticationInterface $currentUser
     )
     {
@@ -37,8 +35,19 @@ class ShoppingItemsController
     {
         $headers = getallheaders();
 
-        if ($headers['Content-Type'] !== 'application/json') {
+
+        if (strpos($headers['Content-Type'], 'multipart/form-data') !== false) {
+
+            $data = [
+                'name' => $_POST['name'] ?? '',
+                'note' => $_POST['note'] ?? '',
+                'quantity' => $_POST['quantity'] ?? 1,
+                'file' => $_FILES['file'] ?? null,
+            ];
+
+        } elseif ($headers['Content-Type'] !== 'application/json') {
             $data = $_POST;
+
         } else {
             // If the content type is JSON, we read the raw input
             $data = json_decode(file_get_contents('php://input'), true);
@@ -48,12 +57,24 @@ class ShoppingItemsController
         $data = CreateItemForm::validate([...$data, 'user_id' => $this->currentUser->id]);
 
 
+        $uploadDir = path('/public/storage/');
+        $extension = pathinfo($data['file']['name'], PATHINFO_EXTENSION);
+        $fileName = uniqid(more_entropy: true) . '.' . $extension;
+        $filePath = "{$uploadDir}.{$fileName}";
+
+        if (!move_uploaded_file($data['file']['tmp_name'], $filePath)) {
+            abort('File upload failed.');
+        }
+
+        $data['file'] = $filePath;
+
+
         $model = ShoppingItem::initiate($data);
 
         $item = $this->shoppingItemRepository->save($model);
 
 
-        echo response($item,'The item was added.', 201);
+        echo response($item, 'The item was added.', 201);
 
     }
 
@@ -72,7 +93,7 @@ class ShoppingItemsController
         $item = $this->shoppingItemRepository->save($model);
 
 
-        echo response($item, 'The item was updated successfully.',200);
+        echo response($item, 'The item was updated successfully.', 200);
 
     }
 
@@ -80,6 +101,10 @@ class ShoppingItemsController
     public function delete(int $id)
     {
         $shoppingItem = $this->shoppingItemRepository->findOrFail($id);
+
+        if($shoppingItem->deleteFile()) {
+            abort("The file cannot be deleted.");
+        }
 
         $this->shoppingItemRepository->delete($shoppingItem);
 

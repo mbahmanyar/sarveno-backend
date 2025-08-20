@@ -8,13 +8,14 @@ class ShoppingItem extends Model
 {
     public function __construct(
         public ?int    $id,
-        public int    $user_id, // Assuming user_id is not part of the model but used in repository
+        public int     $user_id, // Assuming user_id is not part of the model but used in repository
         public string  $name,
         public string  $note,
         public int     $quantity,
         public bool    $is_checked = false,
         public ?string $created_at = null,
-        public ?string $updated_at = null
+        public ?string $updated_at = null,
+        public ?string $file = null
     )
     {
     }
@@ -29,10 +30,23 @@ class ShoppingItem extends Model
             $properties['quantity'] ?? 0,
             $properties['is_checked'] ?? false,
             $properties['created_at'] ?? time(),
-            $properties['updated_at'] ?? time()
+            $properties['updated_at'] ?? time(),
+            $properties['file'] ?? null,
         );
     }
 
+    /**
+     * delete file from storage
+     *
+     * @return boolean
+     */
+    public function deleteFile(): bool
+    {
+        if (file_exists(path($this->file))) {
+            return unlink(path($this->file));
+        }
+        return false;
+    }
 
 
 }

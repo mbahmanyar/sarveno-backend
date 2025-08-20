@@ -40,6 +40,10 @@
                 <label for="note" class="form-label">Note</label>
                 <textarea class="form-control" id="note" name="note"></textarea>
             </div>
+            <div class="form-group">
+                <label for="file">Upload file:</label>
+                <input type="file" class="form-control" id="file" name="file" accept=".txt,.pdf,.docx,.jpg,.png">
+            </div>
             <input type="hidden" name="quantity" value="1">
             <button type="submit" class="btn btn-primary w-100">Add to your list</button>
         </form>
@@ -47,7 +51,7 @@
     </div>
 
 
-    <div id="shopping-item-wrapper">
+    <div id="shopping-item-wrapperd">
         <div class="card">
 
             <div class="shopping-list">
@@ -62,8 +66,10 @@
                         <div class="list-title">Name</div>
                         <div class="list-note">Note</div>
                     </div>
-
                     <div class="list-actions">
+                        <div class="list-image">
+                            <img src="/public/storage/200.png" alt="placeholder image">
+                        </div>
                         <button class="edit-button"
                                 onclick="this.parentElement.parentElement.querySelector('.edit-form').classList.toggle('open')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
